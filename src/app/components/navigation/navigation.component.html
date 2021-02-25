@@ -1,0 +1,30 @@
+<mat-drawer-container class="mat-container" autosize>
+  <mat-toolbar class="mat-header">
+    <button
+      type="button"
+      mat-stroked-button
+      (click)="onMenuClick(drawer)"
+      [ngClass]="{ isActive: isDrawerActive }"
+    >
+      <mat-icon class="home-icon">home</mat-icon>
+      Menu - {{ isDrawerActive }}
+    </button>
+  </mat-toolbar>
+
+  <mat-drawer #drawer class="mat-sidenav" mode="side">
+    <mat-selection-list #shoes [multiple]="false">
+      <mat-list-option
+        *ngFor="let menuItem of menu"
+        [value]="menuItem"
+        [routerLink]="menuItem.routerLink"
+        routerLinkActive="isActive"
+      >
+        {{ menuItem.label }}
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+</mat-drawer-container>

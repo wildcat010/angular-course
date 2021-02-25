@@ -1,0 +1,27 @@
+@import "../../../global";
+
+.isActive {
+  color: $color-menu-activated;
+}
+
+.mat-container {
+  height: 100%;
+}
+
+.mat-sidenav-content {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: left;
+  padding-left: 20px;
+  background-color: $color-ligh-grey;
+}
+
+.mat-sidenav {
+  padding: 20px 0;
+  width: 30%;
+}
+
+.home-icon {
+  margin-bottom: 5px;
+}
