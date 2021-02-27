@@ -1,4 +1,3 @@
-import { Interface } from 'readline';
 
 export class User implements myUser {
   id!: number;
