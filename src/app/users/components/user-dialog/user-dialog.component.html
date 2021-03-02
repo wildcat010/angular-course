@@ -1,0 +1,31 @@
+<p>user-dialog works!</p>
+<h1 mat-dialog-title>Updating the account of {{ userToUpdate.email }}</h1>
+<div mat-dialog-content>
+  <mat-form-field class="input-field">
+    <mat-label>email</mat-label>
+    <input matInput [(ngModel)]="userToUpdate.email" />
+  </mat-form-field>
+  <mat-form-field class="input-field">
+    <mat-label>firstname</mat-label>
+    <textarea
+      matInput
+      placeholder="Firstname"
+      [(ngModel)]="userToUpdate.first_name"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field class="input-field">
+    <mat-label>lastname</mat-label>
+    <textarea
+      matInput
+      placeholder="Lastname"
+      [(ngModel)]="userToUpdate.last_name"
+    ></textarea>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button mat-button [mat-dialog-close]="userToUpdate" cdkFocusInitial>
+    Update
+  </button>
+</div>
