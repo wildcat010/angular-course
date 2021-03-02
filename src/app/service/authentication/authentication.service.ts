@@ -3,33 +3,42 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../model/User';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
-  currentUser: Observable<User> | null;
+  currentUser: Observable<User>;
+  isLogged = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser'))
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-  public get currentUserValue(): User {
+  public getCurrentUserValue(): User {
     return this.currentUserSubject.value;
-}
+  }
 
-  login(username: string, password: string) {
+  login(username: string, password: string): Observable<any> {
     return this.http
-      .post<any>(`/users/authenticate`, {
-        username,
-        password,
+      .post<any>('https://reqres.in/api/login', {
+        email: username,
+        password: password,
       })
       .pipe(
         map((user) => {
-          // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
-          user.authdata = window.btoa(username + ':' + password);
+          debugger;
+          console.log(user);
           localStorage.setItem('currentUser', JSON.stringify(user));
+          console.log(localStorage.getItem('currentUser'));
           this.currentUserSubject.next(user);
-          return user;
+
+          return of(user);
         })
       );
   }

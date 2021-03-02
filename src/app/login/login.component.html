@@ -1,19 +1,29 @@
 <p>login works!</p>
+<p>You are redirected from {{ returnUrl }}</p>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-        <!-- <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-            <div *ngIf="f.username.errors.required">Username is required</div>
-        </div> -->
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-    </div>
-    <button [disabled]="loading" class="btn btn-primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Login
-    </button>
-    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+  <input type="text" placeholder="username" [formControlName]="'username'" />
+  <div
+    *ngIf="
+      loginForm.get('username').touched &&
+      loginForm.get('username').errors?.required
+    "
+  >
+    Username is required
+  </div>
+  <input
+    type="password"
+    placeholder="password"
+    [formControlName]="'password'"
+  />
+  <div
+    *ngIf="
+      loginForm.get('password').touched &&
+      loginForm.get('password').errors?.required
+    "
+  >
+    Password is required
+  </div>
+
+  <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+  {{ loginForm.get("username").dirty }}
 </form>
