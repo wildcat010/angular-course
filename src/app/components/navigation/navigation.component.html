@@ -7,8 +7,9 @@
       [ngClass]="{ isActive: isDrawerActive }"
     >
       <mat-icon class="home-icon">home</mat-icon>
-      Menu - {{ isDrawerActive }}
+      Menu
     </button>
+    <div>{{ displayRouteName }}</div>
   </mat-toolbar>
 
   <mat-drawer #drawer class="mat-sidenav" mode="side">

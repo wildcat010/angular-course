@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthenticationService } from './../service/authentication/authentication.service';
+import { AuthenticationService } from '../../service/authentication/authentication.service';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
   }
 
   resetInput(input: string) {
-    debugger;
-    const b = this.loginForm.value.password;
+    this.loginForm.get(input).reset();
   }
 }
