@@ -55,4 +55,9 @@ export class LoginComponent implements OnInit {
         }
       );
   }
+
+  resetInput(input: string) {
+    debugger;
+    const b = this.loginForm.value.password;
+  }
 }

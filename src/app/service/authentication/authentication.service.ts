@@ -32,7 +32,6 @@ export class AuthenticationService {
       })
       .pipe(
         map((user) => {
-          debugger;
           console.log(user);
           localStorage.setItem('currentUser', JSON.stringify(user));
           console.log(localStorage.getItem('currentUser'));

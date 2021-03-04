@@ -1,29 +1,71 @@
-<p>login works!</p>
-<p>You are redirected from {{ returnUrl }}</p>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="username" [formControlName]="'username'" />
-  <div
-    *ngIf="
-      loginForm.get('username').touched &&
-      loginForm.get('username').errors?.required
-    "
-  >
-    Username is required
-  </div>
-  <input
-    type="password"
-    placeholder="password"
-    [formControlName]="'password'"
-  />
-  <div
-    *ngIf="
-      loginForm.get('password').touched &&
-      loginForm.get('password').errors?.required
-    "
-  >
-    Password is required
-  </div>
+<div class="row">
+  <div class="col-md-7">
+    <p>login works!</p>
+    <p>You are redirected from {{ returnUrl }}</p>
+    <div>
+      <mat-card>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-form-field class="col-md-12">
+            <mat-label>Username</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="username"
+              [formControlName]="'username'"
+            />
+            <mat-error
+              class="formError"
+              *ngIf="
+                loginForm.get('username').touched &&
+                loginForm.get('username').errors?.required
+              "
+            >
+              Username is required
+            </mat-error>
+          </mat-form-field>
 
-  <button type="submit" [disabled]="!loginForm.valid">Submit</button>
-  {{ loginForm.get("username").dirty }}
-</form>
+          <mat-form-field class="col-md-12">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              placeholder="password"
+              [formControlName]="'password'"
+            />
+            <button
+              type="button"
+              mat-button
+              *ngIf="loginForm.controls.password"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="resetInput('password')"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error
+              class="formError"
+              *ngIf="
+                loginForm.get('password').touched &&
+                loginForm.get('password').errors?.required
+              "
+            >
+              Password is required
+            </mat-error>
+          </mat-form-field>
+          <button
+            class="submitButton"
+            type="submit"
+            mat-raised-button
+            color="accent"
+            [disabled]="!loginForm.valid"
+            matTooltipPosition="right"
+            matTooltip="Submit the form to log in the application. Your account will be stored on the browser"
+          >
+            Submit
+          </button>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

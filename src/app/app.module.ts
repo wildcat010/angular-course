@@ -16,6 +16,9 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from './service/authentication/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -34,9 +37,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatListModule,
     MatToolbarModule,
-    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatCardModule,
+    MatInputModule,
+    FormsModule,
+    MatTooltipModule,
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent],
