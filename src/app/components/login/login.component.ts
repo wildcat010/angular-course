@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   error = '';
   returnUrl: string;
   userLogin: string;
-  private currentUserSubject: BehaviorSubject<User>;
+  //private currentUserSubject: BehaviorSubject<User>;
   private subscription: Subscription;
 
   constructor(
@@ -46,30 +46,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
 
-    this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem('currentUser'))
-    );
-    this.subscription = this.currentUserSubject
-      .pipe(
-        filter((user) => {
-          if (user) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-      )
-      .subscribe((user) => {
-        this.userLogin = user.email;
-      });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.authenticationService.currentUserSubject.subscribe((x) => {
+      console.log('plouf');
+    });
   }
 
   onSubmit() {
-    debugger;
     if (this.loginForm.invalid) {
       return;
     }
@@ -77,9 +59,9 @@ export class LoginComponent implements OnInit {
     //the form is valid
     this.submitted = true;
     const credentials = this.loginForm.value;
-    this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem('currentUser'))
-    );
+    // this.currentUserSubject = new BehaviorSubject<User>(
+    //   JSON.parse(localStorage.getItem('currentUser'))
+    // );
     this.authenticationService
       .login(credentials.username, credentials.password)
       .pipe(first())

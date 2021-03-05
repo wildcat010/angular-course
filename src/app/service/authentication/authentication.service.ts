@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../model/User';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -8,13 +8,16 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private currentUserSubject: User;
-  currentUser: string;
-
-  isLogged = false;
+  currentUserSubject: BehaviorSubject<User>;
 
   constructor(private http: HttpClient) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser'))
+    );
+  }
+
+  public getCurrentUserValue(): User {
+    return this.currentUserSubject.value;
   }
 
   login(username: string, password: string): Observable<any> {
@@ -25,15 +28,16 @@ export class AuthenticationService {
       })
       .pipe(
         map((userToken) => {
-          console.log(userToken);
           const myUser = { email: username, token: userToken };
           localStorage.setItem('currentUser', JSON.stringify(myUser));
+          this.currentUserSubject.next(myUser);
+          return myUser;
         })
       );
   }
 
   logout() {
-    // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
 }
