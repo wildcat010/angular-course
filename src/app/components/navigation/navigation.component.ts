@@ -17,7 +17,7 @@ export class NavigationComponent implements OnInit {
 
   constructor(private router: Router) {
     console.log(router.url);
-    this.routeSubscription = router.events
+    this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
         this.displayRouteName = e.url.replace('/', ' ');

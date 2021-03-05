@@ -1,1 +1,9 @@
-<p>footer works!</p>
+<footer>
+  <div class="container">
+    <div class="row logo-container">
+      <div *ngFor="let logo of logos" class="logo">
+        <img [src]="logo.imgName" alt="{{ logo.altText }}" />
+      </div>
+    </div>
+  </div>
+</footer>

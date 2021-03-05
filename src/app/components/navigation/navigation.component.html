@@ -9,7 +9,7 @@
       <mat-icon class="home-icon">home</mat-icon>
       Menu
     </button>
-    <div>{{ displayRouteName }}</div>
+    <div class="display-location">{{ displayRouteName }}</div>
   </mat-toolbar>
 
   <mat-drawer #drawer class="mat-sidenav" mode="side">
@@ -20,7 +20,7 @@
         [routerLink]="menuItem.routerLink"
         routerLinkActive="isActive"
       >
-        {{ menuItem.label }}
+        <div>{{ menuItem.label }}</div>
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>

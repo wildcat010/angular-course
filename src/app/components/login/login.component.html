@@ -1,8 +1,22 @@
 <div class="row">
-  <div class="col-md-7">
-    <p>login works!</p>
-    <p>You are redirected from {{ returnUrl }}</p>
-    <div>
+  <div class="col-md-12">
+    <mat-list>
+      <div *ngIf="returnUrl">
+        <mat-list-item>
+          <div>
+            You are redirected from
+            <span class="redirectionUrl">{{ returnUrl }}</span>
+          </div>
+        </mat-list-item>
+        <mat-divider class="divider"></mat-divider>
+      </div>
+      <mat-list-item>
+        <mat-icon svgIcon="warning-icon" class="icon"></mat-icon>
+
+        <div>You are not authenticated, please submit your credentials</div>
+      </mat-list-item>
+
+      <mat-divider class="divider"></mat-divider>
       <mat-card>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <mat-form-field class="col-md-12 loginForm">
@@ -77,6 +91,9 @@
           </button>
         </form>
       </mat-card>
-    </div>
+
+      <mat-list-item> </mat-list-item>
+    </mat-list>
+    <div></div>
   </div>
 </div>

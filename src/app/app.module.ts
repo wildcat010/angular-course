@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     FormsModule,
     MatTooltipModule,
+    MatDividerModule,
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent],
