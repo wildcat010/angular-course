@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './service/auth/auth.guard';
 import { LoginComponent } from './components/login/login.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,7 +15,17 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     pathMatch: 'full',
   },
+  {
+    path: 'register',
+    loadChildren: () =>
+      import('./register/register.module').then((m) => m.RegisterModule),
+    pathMatch: 'full',
+  },
   { path: 'login', component: LoginComponent },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 <mat-drawer-container class="mat-container" autosize>
-  <mat-toolbar class="mat-header">
+  <mat-toolbar class="mat-header sidenav-row">
     <button
       type="button"
       mat-stroked-button
@@ -10,17 +10,34 @@
       Menu
     </button>
     <div class="display-location">{{ displayRouteName }}</div>
+    <div *ngIf="isUserLogged" class="menuUserAuthentication">
+      <button mat-flat-button [matMenuTriggerFor]="menuAuth">
+        <mat-icon>account_circle</mat-icon>
+        User
+      </button>
+      <mat-menu #menuAuth="matMenu">
+        <button mat-menu-item disabled>
+          <mat-icon>perm_identity</mat-icon>
+          <span>{{ userEmail }}</span>
+        </button>
+
+        <button mat-menu-item (click)="signOut()">
+          <mat-icon>no_encryption</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    </div>
   </mat-toolbar>
 
-  <mat-drawer #drawer class="mat-sidenav" mode="side">
+  <mat-drawer #drawer class="mat-sidenav" mode="over">
     <mat-selection-list #shoes [multiple]="false">
       <mat-list-option
-        *ngFor="let menuItem of menu"
-        [value]="menuItem"
-        [routerLink]="menuItem.routerLink"
+        *ngFor="let menu of menuList"
+        [value]="menu"
+        [routerLink]="menu.routerLink"
         routerLinkActive="isActive"
       >
-        <div>{{ menuItem.label }}</div>
+        <div>{{ menu.label }}</div>
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>

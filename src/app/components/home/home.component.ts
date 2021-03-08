@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { filter } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 
 @Component({
@@ -10,11 +10,5 @@ import { AuthenticationService } from 'src/app/service/authentication/authentica
 export class HomeComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService) {}
 
-  ngOnInit(): void {
-    this.authenticationService.currentUserSubject.subscribe((x) => {
-      if (x) {
-        console.log('plouf from home', x);
-      }
-    });
-  }
+  ngOnInit(): void {}
 }

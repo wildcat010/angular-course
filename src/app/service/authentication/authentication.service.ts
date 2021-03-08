@@ -16,10 +16,6 @@ export class AuthenticationService {
     );
   }
 
-  public getCurrentUserValue(): User {
-    return this.currentUserSubject.value;
-  }
-
   login(username: string, password: string): Observable<any> {
     return this.http
       .post<any>('https://reqres.in/api/login', {

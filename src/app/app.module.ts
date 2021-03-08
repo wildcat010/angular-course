@@ -20,6 +20,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
     FooterComponent,
     HomeComponent,
     LoginComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import { MatDividerModule } from '@angular/material/divider';
     FormsModule,
     MatTooltipModule,
     MatDividerModule,
+    MatMenuModule,
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent],

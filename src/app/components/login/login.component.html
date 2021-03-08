@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
-    <mat-list>
-      <div *ngIf="returnUrl">
+    <mat-list *ngIf="!isLoggedIn; else loggedIn">
+      <div *ngIf="getReturnUrl()">
         <mat-list-item>
           <div>
             You are redirected from
@@ -23,7 +23,7 @@
             <mat-label>Username</mat-label>
             <input
               matInput
-              type="text"
+              type="email"
               placeholder="username"
               [formControlName]="'username'"
             />
@@ -32,7 +32,6 @@
               mat-button
               matSuffix
               mat-icon-button
-              aria-label="Clear"
               *ngIf="loginForm.get('username').value"
               (click)="resetInput('username')"
             >
@@ -46,6 +45,9 @@
               "
             >
               Username is required
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('username').hasError('email')">
+              Please enter a valid email address
             </mat-error>
           </mat-form-field>
 
@@ -62,7 +64,6 @@
               mat-button
               matSuffix
               mat-icon-button
-              aria-label="Clear"
               *ngIf="loginForm.get('password').value"
               (click)="resetInput('password')"
             >
@@ -91,9 +92,23 @@
           </button>
         </form>
       </mat-card>
-
-      <mat-list-item> </mat-list-item>
+      <mat-list-item>
+        <mat-icon>help</mat-icon>
+        <div>
+          &nbsp; You don't have an account, you can register here
+          <button mat-raised-button color="primary" (click)="register()">
+            Register
+          </button>
+        </div>
+      </mat-list-item>
     </mat-list>
-    <div></div>
   </div>
+  <ng-template #loggedIn>
+    <mat-card>
+      <p>You are signed in as {{ userEmail }}</p>
+      <button mat-raised-button color="warn" (click)="signOut()">
+        Sign Out
+      </button>
+    </mat-card>
+  </ng-template>
 </div>

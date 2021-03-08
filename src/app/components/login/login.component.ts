@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../service/authentication/authentication.service';
-import { first } from 'rxjs/operators';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { WARNING } from 'src/assets/icon-lib';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { User } from 'src/app/model/User';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -25,8 +23,9 @@ export class LoginComponent implements OnInit {
   loading = false;
   error = '';
   returnUrl: string;
-  userLogin: string;
-  //private currentUserSubject: BehaviorSubject<User>;
+  isLoggedIn: boolean = false;
+  userEmail: string;
+
   private subscription: Subscription;
 
   constructor(
@@ -44,11 +43,31 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
+    this.subscription = this.authenticationService.currentUserSubject
+      .pipe(
+        filter((x) => {
+          if (x) {
+            return true;
+          } else {
+            this.userEmail = null;
+            this.isLoggedIn = false;
+            return false;
+          }
+        })
+      )
+      .subscribe((user) => {
+        this.userEmail = user.email;
+        this.isLoggedIn = true;
+      });
+  }
 
-    this.authenticationService.currentUserSubject.subscribe((x) => {
-      console.log('plouf');
-    });
+  getReturnUrl(): string {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
+    return this.returnUrl;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onSubmit() {
@@ -59,16 +78,12 @@ export class LoginComponent implements OnInit {
     //the form is valid
     this.submitted = true;
     const credentials = this.loginForm.value;
-    // this.currentUserSubject = new BehaviorSubject<User>(
-    //   JSON.parse(localStorage.getItem('currentUser'))
-    // );
     this.authenticationService
       .login(credentials.username, credentials.password)
-      .pipe(first())
+      .pipe()
       .subscribe(
         () => {
           //success
-          console.log('success ' + this.returnUrl);
           if (this.returnUrl) {
             this.router.navigate([this.returnUrl]);
           }
@@ -83,5 +98,13 @@ export class LoginComponent implements OnInit {
 
   resetInput(input: string) {
     this.loginForm.get(input).reset();
+  }
+
+  signOut() {
+    this.authenticationService.logout();
+  }
+
+  register() {
+    this.router.navigate(['/register']);
   }
 }
