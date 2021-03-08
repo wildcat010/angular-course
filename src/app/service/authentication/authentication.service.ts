@@ -32,6 +32,23 @@ export class AuthenticationService {
       );
   }
 
+  register(email: string, password: string): Observable<any> {
+    return this.http
+      .post<User>('https://reqres.in/api/register', {
+        email: email,
+        password: password,
+      })
+      .pipe(
+        map((user) => {
+          const myUser = { email: email, token: user.token };
+          localStorage.setItem('currentUser', JSON.stringify(myUser));
+          console.log('user', myUser);
+          this.currentUserSubject.next(myUser);
+          return myUser;
+        })
+      );
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

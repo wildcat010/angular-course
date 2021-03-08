@@ -8,6 +8,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
+import { filter } from 'rxjs/operators';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -35,11 +39,12 @@ export class RegisterUserComponent implements OnInit {
   hidePassword = true;
   hideConfirmationPassword = true;
   matcher = new MyErrorStateMatcher();
+  subscription: Subscription;
 
   registerForm = this.form.group(
     {
       email: [
-        'benoit.bourgeon@gmail.com',
+        'michael.lawson@reqres.in',
         [Validators.required, Validators.email],
       ],
       password: ['test', Validators.required],
@@ -48,18 +53,53 @@ export class RegisterUserComponent implements OnInit {
     { validator: this.checkPasswords }
   );
 
-  constructor(private readonly form: FormBuilder) {}
+  constructor(
+    private readonly form: FormBuilder,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subscription = this.authService.currentUserSubject
+      .pipe(
+        filter((x) => {
+          if (x) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      )
+      .subscribe(() => {
+        this.router.navigate(['/login']); // if someone is auth redirect to login
+      });
+  }
 
-  onSubmit() {}
+  onSubmit() {
+    this.authService
+      .register(
+        this.registerForm.controls.email.value,
+        this.registerForm.controls.password.value
+      )
+      .subscribe(
+        () => {
+          //success
+          console.log('success register');
+        },
+        (error) => {
+          console.log('error: ' + error);
+        },
+        () => {
+          this.router.navigate(['/']);
+        }
+      );
+  }
 
   resetInput(input: any) {
     this.registerForm.get(input).reset();
   }
 
   checkPasswords(group: FormGroup): { [key: string]: boolean } | null {
-    debugger;
     const password = group.controls.password.value;
     const confirmationPassword = group.controls.confirmationPassword.value;
 

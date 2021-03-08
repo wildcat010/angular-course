@@ -4,6 +4,7 @@ import { NAVIGATION_MENU } from './navigation-menu';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-navigation',
@@ -45,6 +46,7 @@ export class NavigationComponent implements OnInit {
         })
       )
       .subscribe((user) => {
+        console.log('navigation boom');
         this.userEmail = user.email;
         this.isUserLogged = true;
       });
@@ -56,6 +58,7 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    console.log('destroy nav');
     this.routeSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
   }

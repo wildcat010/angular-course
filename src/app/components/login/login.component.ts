@@ -80,7 +80,6 @@ export class LoginComponent implements OnInit {
     const credentials = this.loginForm.value;
     this.authenticationService
       .login(credentials.username, credentials.password)
-      .pipe()
       .subscribe(
         () => {
           //success
