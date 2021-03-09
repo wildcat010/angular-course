@@ -13,6 +13,9 @@ import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 import { filter } from 'rxjs/operators';
 
+/*
+With Angular material we have to declare an errorStateMatcher to in our case use the validator - password are not the same
+*/
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -90,7 +93,7 @@ export class RegisterUserComponent implements OnInit {
           console.log('error: ' + error);
         },
         () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
         }
       );
   }

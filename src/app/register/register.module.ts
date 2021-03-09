@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthenticationService } from '../service/authentication/authentication.service';
 
 @NgModule({
   declarations: [RegisterUserComponent],
@@ -24,7 +23,7 @@ import { AuthenticationService } from '../service/authentication/authentication.
     MatIconModule,
     MatCardModule,
   ],
-  providers: [AuthenticationService],
+  providers: [],
 })
 export class RegisterModule {
   constructor() {}
