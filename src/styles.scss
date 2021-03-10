@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "global.scss";
-@import "~bootstrap/dist/css/bootstrap.css";
 @import "@angular/material/prebuilt-themes/pink-bluegrey.css";
 
 html,
@@ -11,4 +10,17 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.element {
+  margin: 3em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  display: flex;
 }

@@ -5,3 +5,14 @@
 .registerContainer {
   display: flex;
 }
+
+.registerCard {
+  flex: 1;
+}
+
+a {
+  color: green;
+  &:hover {
+    color: goldenrod;
+  }
+}

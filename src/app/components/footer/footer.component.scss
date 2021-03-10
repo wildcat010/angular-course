@@ -1,6 +1,5 @@
 footer {
   background-color: #212121;
-  margin-top: 20px;
 }
 
 .logo {
@@ -16,4 +15,10 @@ img {
 
 .logo-container {
   justify-content: center;
+}
+
+.footerElement {
+  display: flex;
+  justify-content: center;
+  flex: 1;
 }

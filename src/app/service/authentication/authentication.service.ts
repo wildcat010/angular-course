@@ -24,7 +24,7 @@ export class AuthenticationService {
       })
       .pipe(
         map((userToken) => {
-          const myUser = { email: username, token: userToken };
+          const myUser = { email: username, token: userToken.token };
           localStorage.setItem('currentUser', JSON.stringify(myUser));
           this.currentUserSubject.next(myUser);
           return myUser;

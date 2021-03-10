@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/model/User';
+import { User, UserWithState } from 'src/app/model/User';
 import { UserService } from 'src/app/service/user/user.service';
-import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+import { userState } from 'src/app/model/user-state';
 
 @Component({
   selector: 'app-user-list',
@@ -11,9 +11,9 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
-  users: User[];
+  users: UserWithState[];
   paginationInfo: any;
-  displayedColumns: string[] = ['id', 'email', 'option'];
+  displayedColumns: string[] = ['id', 'email', 'option', 'state'];
   constructor(private userService: UserService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -21,6 +21,11 @@ export class UserListComponent implements OnInit {
       (usersInformation) => {
         //success
         this.users = usersInformation.data;
+
+        this.users.map((x) => {
+          x.state = userState.ORIGINAL;
+        });
+
         let { data, ...paginationInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
         this.paginationInfo = paginationInfo;
       },

@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { InterceptorProviders } from './interceptor/interceptorProviders';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     MatDividerModule,
     MatMenuModule,
   ],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, InterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
