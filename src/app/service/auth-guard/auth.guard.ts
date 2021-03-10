@@ -30,7 +30,6 @@ export class AuthGuard implements CanActivate {
         })
       )
       .subscribe((user) => {
-        console.log('guard', user);
         this.userLogged = user;
       });
   }

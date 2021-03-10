@@ -10,9 +10,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { UserStateDirective } from './customDirective/userState.directive';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [UserListComponent, UserDialogComponent],
+  declarations: [UserListComponent, UserDialogComponent, UserStateDirective],
   imports: [
     CommonModule,
     UsersRoutingModule,
@@ -22,6 +26,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     FormsModule,
     MatIconModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatCardModule,
   ],
   providers: [UserService],
 })

@@ -1,5 +1,3 @@
-import { userState } from 'src/app/model/user-state';
-
 export class User implements myUser {
   id?: number;
   email: string;
@@ -8,10 +6,6 @@ export class User implements myUser {
   last_name?: string;
   avatar?: string;
   token?: string;
-}
-
-export class UserWithState extends User {
-  state: userState.ORIGINAL;
 }
 
 interface myUser {

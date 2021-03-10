@@ -46,7 +46,6 @@ export class NavigationComponent implements OnInit {
         })
       )
       .subscribe((user) => {
-        console.log('navigation boom');
         this.userEmail = user.email;
         this.isUserLogged = true;
       });

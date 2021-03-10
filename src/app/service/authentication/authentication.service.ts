@@ -17,8 +17,9 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string): Observable<any> {
+    const url = 'https://reqres.in/api/login';
     return this.http
-      .post<any>('https://reqres.in/api/login', {
+      .post<any>(url, {
         email: username,
         password: password,
       })

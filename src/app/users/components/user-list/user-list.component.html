@@ -1,31 +1,72 @@
-<p>user-list works!</p>
 <div class="element">
   <table mat-table [dataSource]="users" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
-      <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let user">
+        {{ user.id }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <th mat-header-cell *matHeaderCellDef>Email</th>
       <td mat-cell *matCellDef="let user">{{ user.email }}</td>
     </ng-container>
 
     <ng-container matColumnDef="option">
-      <th mat-header-cell *matHeaderCellDef>Option</th>
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let user">
-        <button mat-icon-button color="warn">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" (click)="modify(user)">
-          <mat-icon>open_in_new</mat-icon>
-        </button>
+        <div>
+          <button
+            mat-icon-button
+            color="accent"
+            (click)="onDisplayUser(user)"
+            matTooltip="View the user"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="accent"
+            (click)="onModify(user)"
+            matTooltip="Open dialog to update info"
+          >
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="accent"
+            (click)="onDeleteUser(user)"
+            matTooltip="Delete"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="state">
       <th mat-header-cell *matHeaderCellDef>State</th>
-      <td mat-cell *matCellDef="let user">{{ user.state }}</td>
+      <td
+        mat-cell
+        *matCellDef="let user"
+        ccUserState
+        [state]="user.state"
+        [ngSwitch]="user.state"
+      >
+        <div [ngSwitch]="user.state">
+          <mat-icon *ngSwitchCase="0" matTooltip="Original user"
+            >collections</mat-icon
+          >
+          <mat-icon *ngSwitchCase="1" matTooltip="Editing info">edit</mat-icon>
+          <mat-icon *ngSwitchCase="2" matTooltip="Info Updated"
+            >assignment_return</mat-icon
+          >
+          <mat-icon *ngSwitchCase="3" matTooltip="Viewing the user"
+            >visibility</mat-icon
+          >
+        </div>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
