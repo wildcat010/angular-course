@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UsersRoutingModule } from './users-routing.module';
-import { UserService } from '../service/user/user.service';
+import { UserService } from './service/user.service';
 import { MatTableModule } from '@angular/material/table';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -14,9 +14,19 @@ import { UserStateDirective } from './customDirective/userState.directive';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
+import { UserViewComponent } from './components/user-view/user-view.component';
+import { UserHomeComponent } from './components/user-home/user-home.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
-  declarations: [UserListComponent, UserDialogComponent, UserStateDirective],
+  declarations: [
+    UserListComponent,
+    UserDialogComponent,
+    UserStateDirective,
+
+    UserHomeComponent,
+    UserViewComponent,
+  ],
   imports: [
     CommonModule,
     UsersRoutingModule,
@@ -29,6 +39,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTabsModule,
     MatTooltipModule,
     MatCardModule,
+    MatDividerModule,
   ],
   providers: [UserService],
 })

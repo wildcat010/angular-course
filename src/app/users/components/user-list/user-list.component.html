@@ -1,5 +1,5 @@
 <div class="element">
-  <table mat-table [dataSource]="users" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>#</th>
       <td mat-cell *matCellDef="let user">
@@ -50,7 +50,7 @@
       <td
         mat-cell
         *matCellDef="let user"
-        ccUserState
+        cdUserState
         [state]="user.state"
         [ngSwitch]="user.state"
       >

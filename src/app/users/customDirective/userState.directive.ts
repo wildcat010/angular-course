@@ -10,7 +10,7 @@ import {
 import { userState } from '../model/user-state';
 
 @Directive({
-  selector: '[ccUserState]',
+  selector: '[cdUserState]',
 })
 export class UserStateDirective implements OnInit, OnChanges {
   @Input('state') state: userState;
