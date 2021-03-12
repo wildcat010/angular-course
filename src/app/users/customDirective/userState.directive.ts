@@ -45,6 +45,10 @@ export class UserStateDirective implements OnInit, OnChanges {
           classStyle = 'viewing';
           break;
         }
+        case userState.DELETING: {
+          classStyle = 'deleting';
+          break;
+        }
         default: {
           classStyle = null;
           break;

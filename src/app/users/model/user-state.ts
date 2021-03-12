@@ -3,4 +3,5 @@ export enum userState {
   MODIFIED,
   UPDATED,
   VIEWING,
+  DELETING,
 }

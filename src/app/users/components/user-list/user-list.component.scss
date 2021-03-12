@@ -7,6 +7,10 @@ th.mat-header-cell {
   text-align: center;
 }
 
+.stateIcon {
+  cursor: default;
+}
+
 .original {
   color: white;
 }
@@ -21,4 +25,8 @@ th.mat-header-cell {
 
 .viewing {
   color: indigo;
+}
+
+.deleting {
+  color: red;
 }

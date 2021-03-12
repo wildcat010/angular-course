@@ -29,6 +29,9 @@ export class NavigationComponent implements OnInit {
       .subscribe((e: NavigationEnd) => {
         const urlSplit = e.url.split(/[/?]/);
         this.displayRouteName = urlSplit[1];
+        if (+urlSplit[2]) {
+          this.displayRouteName += ` ${urlSplit[2]}`;
+        }
       });
   }
 

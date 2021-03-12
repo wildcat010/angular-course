@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { UserHomeComponent } from './components/user-home/user-home.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
+    MatPaginatorModule,
   ],
   providers: [UserService],
 })

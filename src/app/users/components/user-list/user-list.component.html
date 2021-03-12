@@ -54,16 +54,19 @@
         [state]="user.state"
         [ngSwitch]="user.state"
       >
-        <div [ngSwitch]="user.state">
+        <div [ngSwitch]="user.state" class="stateIcon">
           <mat-icon *ngSwitchCase="0" matTooltip="Original user"
             >collections</mat-icon
           >
-          <mat-icon *ngSwitchCase="1" matTooltip="Editing info">edit</mat-icon>
-          <mat-icon *ngSwitchCase="2" matTooltip="Info Updated"
+          <mat-icon *ngSwitchCase="1" matTooltip="Editing user">edit</mat-icon>
+          <mat-icon *ngSwitchCase="2" matTooltip="User updated"
             >assignment_return</mat-icon
           >
-          <mat-icon *ngSwitchCase="3" matTooltip="Viewing the user"
+          <mat-icon *ngSwitchCase="3" matTooltip="Viewing user"
             >visibility</mat-icon
+          >
+          <mat-icon *ngSwitchCase="4" matTooltip="Deleting user"
+            >delete_outline</mat-icon
           >
         </div>
       </td>
@@ -72,4 +75,13 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <mat-paginator
+    *ngIf="paginationInfo"
+    [pageSize]="paginationInfo.per_page"
+    [length]="paginationInfo.total"
+    [pageIndex]="paginationInfo.page - 1"
+    [hidePageSize]="true"
+    (page)="pageEvent($event)"
+  >
+  </mat-paginator>
 </div>
