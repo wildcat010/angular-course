@@ -1,5 +1,7 @@
+@import "../../../global";
+
 .formError {
-  color: #8e1600;
+  color: $color-dark-red;
 }
 
 .loginForm {
@@ -11,7 +13,7 @@
 }
 
 .redirectionUrl {
-  color: #29ab87;
+  color: $color-deep-green;
 }
 
 .icon {

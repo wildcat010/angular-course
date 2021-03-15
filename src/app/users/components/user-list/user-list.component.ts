@@ -23,8 +23,8 @@ import { Observable } from 'rxjs';
 })
 export class UserListComponent implements OnInit {
   users: UserWithState[] = [];
-
-  count$: Observable<UserWithState[]>;
+  isProcessing = true;
+  cart: Observable<UserWithState[]>;
 
   paginationInfo: any;
   displayedColumns: string[] = ['id', 'email', 'option', 'state'];
@@ -37,10 +37,9 @@ export class UserListComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private router: Router,
-    private store: Store<{ users: UserWithState[] }>
+    private router: Router //private store: Store<{ usersStore: UserWithState[] }>
   ) {
-    this.count$ = this.store.select('users');
+    //this.store.select('usersStore').subscribe((state: any => this.cart = state));
   }
 
   ngOnInit(): void {
@@ -58,12 +57,14 @@ export class UserListComponent implements OnInit {
       () => {
         //init the paginator
         this.dataSource.paginator = this.paginator;
+        this.isProcessing = false;
       }
     );
   }
 
   onDeleteUser(user: UserWithState) {
     this.setState(user, userState.DELETING);
+    this.isProcessing = true;
     this.userService.deleteUser(user.id).subscribe(
       () => {
         const data = this.dataSource.data;
@@ -71,7 +72,9 @@ export class UserListComponent implements OnInit {
         data.splice(index, 1);
         this.dataSource.data = data;
       },
+      (err) => {},
       () => {
+        this.isProcessing = false;
         this.setState(user, user.previousState);
       }
     );
@@ -92,15 +95,19 @@ export class UserListComponent implements OnInit {
         userIndex = this.findUserIndex(result.id);
         userUpdated = this.users[userIndex];
         this.setState(userUpdated, userState.MODIFIED);
-
-        this.userService.updateUser(result).subscribe((res) => {
-          this.setState(userUpdated, userState.UPDATED);
-          userUpdated.lastUpdated = res.updatedAt;
-          const newUser = { ...userUpdated };
-          this.users[userIndex] = newUser;
-          this.dataSource.data = this.users;
-          console.log('user', newUser);
-        });
+        this.isProcessing = true;
+        this.userService.updateUser(result).subscribe(
+          (res) => {
+            this.setState(userUpdated, userState.UPDATED);
+            userUpdated.lastUpdated = res.updatedAt;
+            const newUser = { ...userUpdated };
+            this.users[userIndex] = newUser;
+            this.dataSource.data = this.users;
+            console.log('user', newUser);
+          },
+          (err) => {},
+          () => (this.isProcessing = false)
+        );
       } else {
         userIndex = this.findUserIndex(user.id);
         userUpdated = this.users[userIndex];
@@ -117,9 +124,9 @@ export class UserListComponent implements OnInit {
   }
 
   pageEvent($event): void {
-    this.userService
-      .getUserList($event.pageIndex + 1)
-      .subscribe((usersInformation) => {
+    this.isProcessing = true;
+    this.userService.getUserList($event.pageIndex + 1).subscribe(
+      (usersInformation) => {
         this.users = [];
         const newUsers = usersInformation.data;
         newUsers.forEach((element) => {
@@ -128,7 +135,10 @@ export class UserListComponent implements OnInit {
         this.users.push(...newUsers);
         this.users = [...this.users];
         this.dataSource.data = this.users;
-      });
+      },
+      (err) => {},
+      () => (this.isProcessing = false)
+    );
   }
 
   private findUserIndex(userId: number): number {

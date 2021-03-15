@@ -1,0 +1,14 @@
+@import "../../../../global";
+
+:host {
+  display: inline-flex;
+
+  .row {
+    display: inline-flex;
+  }
+
+  .descriptionProcessing {
+    padding-top: 10px;
+    color: $color-light-white;
+  }
+}

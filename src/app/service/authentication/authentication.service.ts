@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../model/User';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { API_URL_LOGIN, API_URL_REGISTER } from 'src/app/global/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +18,8 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string): Observable<any> {
-    const url = 'https://reqres.in/api/login';
     return this.http
-      .post<any>(url, {
+      .post<any>(API_URL_LOGIN, {
         email: username,
         password: password,
       })
@@ -35,7 +35,7 @@ export class AuthenticationService {
 
   register(email: string, password: string): Observable<any> {
     return this.http
-      .post<User>('https://reqres.in/api/register', {
+      .post<User>(API_URL_REGISTER, {
         email: email,
         password: password,
       })
@@ -43,7 +43,6 @@ export class AuthenticationService {
         map((user) => {
           const myUser = { email: email, token: user.token };
           localStorage.setItem('currentUser', JSON.stringify(myUser));
-          console.log('user', myUser);
           this.currentUserSubject.next(myUser);
           return myUser;
         })

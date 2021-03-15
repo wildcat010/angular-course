@@ -1,3 +1,5 @@
+@import "../../../../global";
+
 table {
   width: 100%;
 }
@@ -12,21 +14,21 @@ th.mat-header-cell {
 }
 
 .original {
-  color: white;
+  color: $color-ligh-grey;
 }
 
 .modified {
-  color: goldenrod;
+  color: $color-golden-rod;
 }
 
 .updated {
-  color: green;
+  color: $color-deep-green;
 }
 
 .viewing {
-  color: indigo;
+  color: $color-indo;
 }
 
 .deleting {
-  color: red;
+  color: $color-dark-red;
 }

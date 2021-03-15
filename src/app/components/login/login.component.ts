@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
     //the form is valid
     this.submitted = true;
     const credentials = this.loginForm.value;
+    this.loading = true;
     this.authenticationService
       .login(credentials.username, credentials.password)
       .subscribe(
@@ -90,6 +91,9 @@ export class LoginComponent implements OnInit {
         (error) => {
           console.log('error: ' + error);
           this.error = error;
+          this.loading = false;
+        },
+        () => {
           this.loading = false;
         }
       );

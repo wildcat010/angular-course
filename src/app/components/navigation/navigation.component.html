@@ -9,7 +9,7 @@
       <mat-icon class="home-icon">home</mat-icon>
       Menu
     </button>
-    <div class="display-location">{{ displayRouteName }}</div>
+    <div class="display-location">{{ displayRouteName | uppercase }}</div>
     <div *ngIf="isUserLogged" class="menuUserAuthentication">
       <button mat-flat-button [matMenuTriggerFor]="menuAuth">
         <mat-icon>account_circle</mat-icon>

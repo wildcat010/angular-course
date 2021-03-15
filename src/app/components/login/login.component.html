@@ -83,12 +83,17 @@
           type="submit"
           mat-raised-button
           color="accent"
-          [disabled]="!loginForm.valid"
+          [disabled]="!loginForm.valid || loading"
           matTooltip="Submit the form to log in the application. Your account will be stored on the browser"
         >
           Submit
         </button>
       </form>
+      <app-spinner [isProcessing]="loading">
+        <p class="descriptionProcessing">
+          Try to login in the application, please wait
+        </p>
+      </app-spinner>
     </mat-card>
     <mat-list-item>
       <mat-icon>help</mat-icon>
