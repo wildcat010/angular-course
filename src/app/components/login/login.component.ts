@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../service/authentication/authentication.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -18,8 +18,8 @@ import { BottomSheetComponent } from '../shared/bottom-sheet/bottom-sheet.compon
 })
 export class LoginComponent implements OnInit {
   readonly loginForm = this.form.group({
-    username: ['eve.holt@reqres.in', Validators.required],
-    password: ['cityslicka', Validators.required],
+    username: new FormControl('eve.holt@reqres.in', Validators.required),
+    password: new FormControl('cityslicka', Validators.required),
   });
 
   loading = false;
