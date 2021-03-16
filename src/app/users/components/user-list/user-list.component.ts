@@ -16,7 +16,7 @@ import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { Pagination } from '../../model/pagination';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ErrorService } from 'src/app/service/error/error.service';
-import { BottomSheetComponent } from 'src/app/components/shared/bottom-sheet/bottom-sheet.component';
+import { BottomSheetComponent } from 'src/app/shared/bottom-sheet/bottom-sheet.component';
 
 @Component({
   selector: 'app-user-list',

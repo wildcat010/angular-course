@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BottomSheetComponent } from 'src/app/components/shared/bottom-sheet/bottom-sheet.component';
+import { BottomSheetComponent } from 'src/app/shared/bottom-sheet/bottom-sheet.component';
 import { ErrorService } from 'src/app/service/error/error.service';
 import { UserService } from '../../service/user.service';
 

@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ErrorService } from 'src/app/service/error/error.service';
-import { BottomSheetComponent } from '../shared/bottom-sheet/bottom-sheet.component';
+import { BottomSheetComponent } from '../../shared/bottom-sheet/bottom-sheet.component';
 
 @Component({
   selector: 'app-login',
@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
     }
 
     //the form is valid
-
+    debugger;
     const credentials = this.loginForm.value;
     this.loading = true;
     this.authenticationService

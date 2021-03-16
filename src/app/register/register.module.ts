@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorService } from '../service/error/error.service';
-import { SharedModule } from '../components/shared/module/shared.module';
+import { SharedModule } from '../shared/module/shared.module';
 
 @NgModule({
   declarations: [RegisterUserComponent],

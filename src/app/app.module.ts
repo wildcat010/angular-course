@@ -22,7 +22,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { InterceptorProviders } from './interceptor/interceptorProviders';
-import { SharedModule } from './components/shared/module/shared.module';
+import { SharedModule } from './shared/module/shared.module';
 import { ErrorService } from './service/error/error.service';
 
 @NgModule({

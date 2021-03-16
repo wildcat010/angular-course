@@ -14,7 +14,7 @@ import { AuthenticationService } from 'src/app/service/authentication/authentica
 import { filter } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ErrorService } from 'src/app/service/error/error.service';
-import { BottomSheetComponent } from 'src/app/components/shared/bottom-sheet/bottom-sheet.component';
+import { BottomSheetComponent } from 'src/app/shared/bottom-sheet/bottom-sheet.component';
 
 /*
 With Angular material we have to declare an errorStateMatcher to in our case use the validator - password are not the same

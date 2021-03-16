@@ -1,5 +1,4 @@
-@import "../../../../global";
-@import "@angular/material/prebuilt-themes/pink-bluegrey.css";
+@import "../../../global";
 
 :host {
   .row {
@@ -13,5 +12,9 @@
 
   mat-spinner {
     margin-top: 10px;
+  }
+
+  .mat-spinner circle {
+    stroke: #c2185b;
   }
 }
