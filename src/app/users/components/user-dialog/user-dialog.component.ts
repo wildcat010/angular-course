@@ -13,7 +13,7 @@ export class UserDialogComponent {
     public dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.userToUpdate = data.user;
+    this.userToUpdate = data.userToModify;
   }
 
   onNoClick(): void {

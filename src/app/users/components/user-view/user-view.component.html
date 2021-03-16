@@ -1,6 +1,6 @@
-<div class="element" *ngIf="user">
+<div class="element">
   <mat-card class="example-card">
-    <mat-card-header>
+    <mat-card-header *ngIf="user; else noUser">
       <div mat-card-avatar class="avatar">
         <img mat-card-image [src]="user.avatar" alt="avatar" />
       </div>
@@ -9,8 +9,13 @@
         <mat-card-subtitle>{{ user.last_name }}</mat-card-subtitle>
       </div>
     </mat-card-header>
+    <ng-template #noUser>
+      <div class="header">
+        <mat-card-subtitle>Can't load the user</mat-card-subtitle>
+      </div>
+    </ng-template>
     <mat-divider></mat-divider>
-    <mat-card-content class="content">
+    <mat-card-content class="content" *ngIf="user">
       <p>id: {{ user.id }}</p>
       <p>email: {{ user.email }}</p>
     </mat-card-content>

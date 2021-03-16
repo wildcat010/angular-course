@@ -12,22 +12,23 @@ import { ErrorService } from 'src/app/service/error/error.service';
 export class BottomSheetComponent implements OnInit {
   titleError: any;
   descriptionError: string;
+  errorSubscription: Subscription;
   constructor(
     private sheetRef: MatBottomSheet,
     private errorService: ErrorService
   ) {}
 
   ngOnInit(): void {
-    this.errorService.currentErrorSubject.subscribe((x) => {
-      this.titleError = x.title;
-      this.descriptionError = x.description;
-    });
+    this.errorSubscription = this.errorService.currentErrorSubject.subscribe(
+      (x) => {
+        this.titleError = x.title;
+        this.descriptionError = x.description;
+      }
+    );
   }
 
-  setError(error: any) {
-    const myError = this.errorService.currentErrorSubject.value;
-    console.log('bottom error service 2', myError);
-    debugger;
+  ngOnDestroy() {
+    this.errorSubscription.unsubscribe();
   }
 
   openBottomSheet() {

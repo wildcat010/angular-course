@@ -12,6 +12,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ErrorService } from 'src/app/service/error/error.service';
 import { BottomSheetComponent } from '../shared/bottom-sheet/bottom-sheet.component';
 
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,7 +31,6 @@ export class LoginComponent implements OnInit {
   userEmail: string;
 
   private subscription: Subscription;
-  private errorSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
 
-    private _bottomSheet: MatBottomSheet,
+    private bottomSheet: MatBottomSheet,
     private errorService: ErrorService
   ) {
     this.iconRegistry.addSvgIconLiteral(
@@ -49,10 +50,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.errorSubscription = this.errorService.currentErrorSubject.subscribe(
-      (x) => console.log('error subscription', x)
-    );
-
     this.subscription = this.authenticationService.currentUserSubject
       .pipe(
         filter((x) => {
@@ -66,7 +63,6 @@ export class LoginComponent implements OnInit {
         })
       )
       .subscribe((user) => {
-        debugger;
         this.userEmail = user.email;
         this.isLoggedIn = true;
       });
@@ -79,7 +75,6 @@ export class LoginComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.errorSubscription.unsubscribe();
   }
 
   onSubmit() {
@@ -101,11 +96,15 @@ export class LoginComponent implements OnInit {
           }
         },
         (error) => {
+          let description = error.message;
+          if (error.status === 400) {
+            description = error.error.error;
+          }
           this.errorService.currentErrorSubject.next({
             title: error.status,
-            description: error.message,
+            description: description,
           });
-          this._bottomSheet.open(BottomSheetComponent);
+          this.bottomSheet.open(BottomSheetComponent);
           this.loading = false;
         },
         () => {

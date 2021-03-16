@@ -12,8 +12,11 @@ import { UserWithState } from '../../model/user-with-state';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { Pagination } from '../../model/pagination';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ErrorService } from 'src/app/service/error/error.service';
+import { BottomSheetComponent } from 'src/app/components/shared/bottom-sheet/bottom-sheet.component';
 
 @Component({
   selector: 'app-user-list',
@@ -29,13 +32,16 @@ export class UserListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'email', 'option', 'state'];
   dataSource: MatTableDataSource<UserWithState> = new MatTableDataSource<UserWithState>();
+  errorSubscription: Subscription;
 
   @ViewChild(MatPaginator, { read: true }) paginator: MatPaginator; // read true because the pagination comes from the server side
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private bottomSheet: MatBottomSheet,
+    private errorService: ErrorService
   ) {
     this.pagination = { per_page: 0, length: 0, page_index: 0 };
   }
@@ -60,7 +66,14 @@ export class UserListComponent implements OnInit {
           true
         );
       },
-      (error) => console.log('error', error),
+      (error) => {
+        this.errorService.currentErrorSubject.next({
+          title: error.status,
+          description: error.message,
+        });
+        this.bottomSheet.open(BottomSheetComponent);
+        this.isProcessing$.next(false);
+      },
       () => {
         this.isProcessing$.next(false);
         this.dataSource.data = this.users;
@@ -93,9 +106,14 @@ export class UserListComponent implements OnInit {
 
         console.log('data', this.isProcessing$.value);
       },
-      (err) => {
-        console.log('error', err);
+      (error) => {
         this.setState(user, user.previousState);
+        this.errorService.currentErrorSubject.next({
+          title: error.status,
+          description: error.message,
+        });
+        this.bottomSheet.open(BottomSheetComponent);
+        this.isProcessing$.next(false);
       },
       () => {
         this.setPagination(this.pagination);
@@ -104,10 +122,12 @@ export class UserListComponent implements OnInit {
   }
 
   onModify(user: UserWithState) {
+    const originalState = user.state;
     this.setState(user, userState.VIEWING);
+    const userToModify = { ...user };
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '500px',
-      data: { user },
+      data: { userToModify },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -115,19 +135,32 @@ export class UserListComponent implements OnInit {
       let userUpdated;
 
       if (result) {
-        userIndex = this.findUserIndex(result.id);
+        userIndex = this.findUserIndex(user.id);
         userUpdated = this.users[userIndex];
         this.setState(userUpdated, userState.MODIFIED);
         this.isProcessing$.next(true);
         this.userService.updateUser(result).subscribe(
           (res) => {
+            userUpdated = { ...result };
             this.setState(userUpdated, userState.UPDATED);
             userUpdated.lastUpdated = res.updatedAt;
             const newUser = { ...userUpdated };
             this.users[userIndex] = newUser;
             this.dataSource.data = this.users;
           },
-          (err) => {},
+          (error) => {
+            this.errorService.currentErrorSubject.next({
+              title: error.status,
+              description: error.message,
+            });
+
+            this.bottomSheet.open(BottomSheetComponent);
+            this.isProcessing$.next(false);
+            const rollbackUser = { ...user };
+            this.setState(rollbackUser, originalState);
+            this.users[userIndex] = rollbackUser;
+            this.dataSource.data = this.users;
+          },
           () => {
             this.isProcessing$.next(false);
           }
@@ -172,7 +205,22 @@ export class UserListComponent implements OnInit {
 
         this.dataSource.data = this.users;
       },
-      (err) => {},
+      (error) => {
+        this.errorService.currentErrorSubject.next({
+          title: error.status,
+          description: error.message,
+        });
+        this.bottomSheet.open(BottomSheetComponent);
+        this.isProcessing$.next(false);
+        this.setPagination(
+          {
+            per_page: this.pagination.per_page,
+            length: this.pagination.length,
+            page_index: this.pagination.page_index,
+          },
+          true
+        );
+      },
       () => {
         this.isProcessing$.next(false);
       }

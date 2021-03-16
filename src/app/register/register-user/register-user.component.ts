@@ -63,7 +63,7 @@ export class RegisterUserComponent implements OnInit {
     private readonly form: FormBuilder,
     private authService: AuthenticationService,
     private router: Router,
-    private _bottomSheet: MatBottomSheet,
+    private bottomSheet: MatBottomSheet,
     private errorService: ErrorService
   ) {}
 
@@ -99,7 +99,7 @@ export class RegisterUserComponent implements OnInit {
             title: error.status,
             description: error.message,
           });
-          this._bottomSheet.open(BottomSheetComponent);
+          this.bottomSheet.open(BottomSheetComponent);
         },
         () => {
           this.router.navigate(['/login']);

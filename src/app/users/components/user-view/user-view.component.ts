@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BottomSheetComponent } from 'src/app/components/shared/bottom-sheet/bottom-sheet.component';
+import { ErrorService } from 'src/app/service/error/error.service';
 import { UserService } from '../../service/user.service';
 
 @Component({
@@ -14,7 +17,9 @@ export class UserViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private bottomSheet: MatBottomSheet,
+    private errorService: ErrorService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +40,13 @@ export class UserViewComponent implements OnInit {
         //success
         this.user = userInformation.data;
       },
-      (error) => console.log('error', error),
+      (error) => {
+        this.errorService.currentErrorSubject.next({
+          title: error.status,
+          description: error.message,
+        });
+        this.bottomSheet.open(BottomSheetComponent);
+      },
       () => {
         console.log('user', this.user);
       }
