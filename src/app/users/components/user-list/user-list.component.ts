@@ -10,10 +10,10 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { userState } from 'src/app/users/model/user-state';
 import { UserWithState } from '../../model/user-with-state';
 import { Router } from '@angular/router';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { Pagination } from '../../model/pagination';
 
 @Component({
   selector: 'app-user-list',
@@ -23,23 +23,21 @@ import { Observable } from 'rxjs';
 })
 export class UserListComponent implements OnInit {
   users: UserWithState[] = [];
-  isProcessing = true;
-  cart: Observable<UserWithState[]>;
+  isProcessing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  paginationInfo: any;
+  pagination: Pagination;
+
   displayedColumns: string[] = ['id', 'email', 'option', 'state'];
-  dataSource: MatTableDataSource<UserWithState> = new MatTableDataSource<UserWithState>(
-    this.users
-  );
+  dataSource: MatTableDataSource<UserWithState> = new MatTableDataSource<UserWithState>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { read: true }) paginator: MatPaginator; // read true because the pagination comes from the server side
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private router: Router //private store: Store<{ usersStore: UserWithState[] }>
+    private router: Router
   ) {
-    //this.store.select('usersStore').subscribe((state: any => this.cart = state));
+    this.pagination = { per_page: 0, length: 0, page_index: 0 };
   }
 
   ngOnInit(): void {
@@ -50,32 +48,57 @@ export class UserListComponent implements OnInit {
           element.state = userState.ORIGINAL;
         });
         this.users.push(...newUsers);
-        let { data, ...paginationInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
-        this.paginationInfo = paginationInfo;
+        let { data, ...pgnInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
+        console.log('page info', pgnInfo);
+
+        this.setPagination(
+          {
+            per_page: pgnInfo.per_page,
+            length: pgnInfo.total,
+            page_index: pgnInfo.page,
+          },
+          true
+        );
       },
       (error) => console.log('error', error),
       () => {
-        //init the paginator
-        this.dataSource.paginator = this.paginator;
-        this.isProcessing = false;
+        this.isProcessing$.next(false);
+        this.dataSource.data = this.users;
       }
     );
   }
 
+  ngAfterViewInit() {
+    console.log('paginator', this.paginator);
+
+    this.dataSource.paginator = this.paginator;
+  }
+
   onDeleteUser(user: UserWithState) {
     this.setState(user, userState.DELETING);
-    this.isProcessing = true;
+    this.isProcessing$.next(true);
     this.userService.deleteUser(user.id).subscribe(
       () => {
-        const data = this.dataSource.data;
+        this.isProcessing$.next(false);
+
         const index = this.findUserIndex(user.id);
-        data.splice(index, 1);
-        this.dataSource.data = data;
+
+        const newUser = [...this.users];
+        newUser.splice(index, 1);
+
+        this.users.push(...newUser);
+        this.users = newUser;
+
+        this.dataSource.data = this.users;
+
+        console.log('data', this.isProcessing$.value);
       },
-      (err) => {},
-      () => {
-        this.isProcessing = false;
+      (err) => {
+        console.log('error', err);
         this.setState(user, user.previousState);
+      },
+      () => {
+        this.setPagination(this.pagination);
       }
     );
   }
@@ -95,7 +118,7 @@ export class UserListComponent implements OnInit {
         userIndex = this.findUserIndex(result.id);
         userUpdated = this.users[userIndex];
         this.setState(userUpdated, userState.MODIFIED);
-        this.isProcessing = true;
+        this.isProcessing$.next(true);
         this.userService.updateUser(result).subscribe(
           (res) => {
             this.setState(userUpdated, userState.UPDATED);
@@ -103,10 +126,11 @@ export class UserListComponent implements OnInit {
             const newUser = { ...userUpdated };
             this.users[userIndex] = newUser;
             this.dataSource.data = this.users;
-            console.log('user', newUser);
           },
           (err) => {},
-          () => (this.isProcessing = false)
+          () => {
+            this.isProcessing$.next(false);
+          }
         );
       } else {
         userIndex = this.findUserIndex(user.id);
@@ -124,7 +148,7 @@ export class UserListComponent implements OnInit {
   }
 
   pageEvent($event): void {
-    this.isProcessing = true;
+    this.isProcessing$.next(true);
     this.userService.getUserList($event.pageIndex + 1).subscribe(
       (usersInformation) => {
         this.users = [];
@@ -134,11 +158,48 @@ export class UserListComponent implements OnInit {
         });
         this.users.push(...newUsers);
         this.users = [...this.users];
+
+        let { data, ...pgnInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
+        console.log('page info', pgnInfo);
+        this.setPagination(
+          {
+            per_page: pgnInfo.per_page,
+            length: pgnInfo.total,
+            page_index: pgnInfo.page,
+          },
+          true
+        );
+
         this.dataSource.data = this.users;
       },
       (err) => {},
-      () => (this.isProcessing = false)
+      () => {
+        this.isProcessing$.next(false);
+      }
     );
+  }
+
+  private setPagination(pager: Pagination, pageEvent: boolean = false): void {
+    let page_index = pager.page_index;
+    let length = pager.length;
+    let per_page = pager.per_page;
+    if (!pageEvent) {
+      length = length - 1;
+      if (page_index === 0) {
+        per_page = per_page - 1;
+      }
+      if (this.users.length === 0) {
+        return this.pageEvent(1);
+      }
+    } else {
+      page_index = page_index - 1;
+    }
+
+    this.pagination = {
+      per_page: per_page,
+      length: length,
+      page_index: page_index,
+    };
   }
 
   private findUserIndex(userId: number): number {

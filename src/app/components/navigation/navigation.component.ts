@@ -59,12 +59,6 @@ export class NavigationComponent implements OnInit {
     this.isDrawerActive = !this.isDrawerActive;
   }
 
-  ngOnDestroy() {
-    console.log('destroy nav');
-    this.routeSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
-  }
-
   signOut() {
     this.authService.logout();
     this.router.navigate(['/login']);

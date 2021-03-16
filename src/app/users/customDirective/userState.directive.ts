@@ -25,8 +25,6 @@ export class UserStateDirective implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.state) {
-      console.log('input changed', changes.state.currentValue);
-
       let classStyle;
       switch (changes.state.currentValue) {
         case userState.MODIFIED: {

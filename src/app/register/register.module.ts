@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { ErrorService } from '../service/error/error.service';
+import { SharedModule } from '../components/shared/module/shared.module';
 
 @NgModule({
   declarations: [RegisterUserComponent],
@@ -22,8 +24,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    SharedModule,
   ],
-  providers: [],
+  providers: [ErrorService],
 })
 export class RegisterModule {
   constructor() {}

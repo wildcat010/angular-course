@@ -1,7 +1,8 @@
 <div class="element">
-  <app-spinner [isProcessing]="isProcessing">
+  <app-spinner [isProcessing]="isProcessing$ | async">
     <p class="descriptionProcessing">Processing the user list, please wait</p>
   </app-spinner>
+
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>#</th>
@@ -23,7 +24,7 @@
             mat-icon-button
             color="accent"
             (click)="onDisplayUser(user)"
-            [disabled]="isProcessing"
+            [disabled]="isProcessing$ | async"
             matTooltip="View the user"
           >
             <mat-icon>visibility</mat-icon>
@@ -33,7 +34,7 @@
             color="accent"
             (click)="onModify(user)"
             matTooltip="Open dialog to update info"
-            [disabled]="isProcessing"
+            [disabled]="isProcessing$ | async"
           >
             <mat-icon>open_in_new</mat-icon>
           </button>
@@ -43,7 +44,7 @@
             color="accent"
             (click)="onDeleteUser(user)"
             matTooltip="Delete"
-            [disabled]="isProcessing"
+            [disabled]="isProcessing$ | async"
           >
             <mat-icon>delete</mat-icon>
           </button>
@@ -81,13 +82,14 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-  <mat-paginator
-    *ngIf="paginationInfo"
-    [pageSize]="paginationInfo.per_page"
-    [length]="paginationInfo.total"
-    [pageIndex]="paginationInfo.page - 1"
-    [hidePageSize]="true"
-    (page)="pageEvent($event)"
-  >
-  </mat-paginator>
+  <div>
+    <mat-paginator
+      [hidePageSize]="true"
+      (page)="pageEvent($event)"
+      [pageSize]="pagination.per_page"
+      [length]="pagination.length"
+      [pageIndex]="pagination.page_index"
+    >
+    </mat-paginator>
+  </div>
 </div>

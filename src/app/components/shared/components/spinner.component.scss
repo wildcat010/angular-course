@@ -1,14 +1,17 @@
 @import "../../../../global";
+@import "@angular/material/prebuilt-themes/pink-bluegrey.css";
 
 :host {
-  display: inline-flex;
-
   .row {
     display: inline-flex;
   }
 
   .descriptionProcessing {
-    padding-top: 10px;
+    display: flex;
     color: $color-light-white;
+  }
+
+  mat-spinner {
+    margin-top: 10px;
   }
 }

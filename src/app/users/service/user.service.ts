@@ -13,7 +13,7 @@ export class UserService {
   getUserList(page: number): Observable<any> {
     let params = new HttpParams();
     params = params.append('page', page.toString());
-    //params = params.append('delay', '3');
+    params = params.append('delay', '1');
 
     return this.http.get<any>(API_URL_USERS, { params: params });
   }
@@ -24,8 +24,11 @@ export class UserService {
   }
 
   deleteUser(id: number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('delay', '1');
+
     const url = 'https://reqres.in/api/users/' + id;
-    return this.http.delete<any>(url);
+    return this.http.delete<any>(url, { params: params });
   }
 
   updateUser(user: User): Observable<any> {

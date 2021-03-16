@@ -23,8 +23,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { InterceptorProviders } from './interceptor/interceptorProviders';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from './components/shared/module/shared.module';
+import { ErrorService } from './service/error/error.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,7 @@ import { SharedModule } from './components/shared/module/shared.module';
 
     SharedModule,
   ],
-  providers: [AuthenticationService, InterceptorProviders],
+  providers: [AuthenticationService, InterceptorProviders, ErrorService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

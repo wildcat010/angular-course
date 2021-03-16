@@ -1,4 +1,4 @@
-export class User implements myUser {
+export class User implements IUser {
   id?: number;
   email: string;
   password?: string;
@@ -8,7 +8,7 @@ export class User implements myUser {
   token?: string;
 }
 
-interface myUser {
+interface IUser {
   id?: number;
   email: string;
   password?: string;

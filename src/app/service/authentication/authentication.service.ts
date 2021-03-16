@@ -34,8 +34,9 @@ export class AuthenticationService {
   }
 
   register(email: string, password: string): Observable<any> {
+    const url = 'dummyURL';
     return this.http
-      .post<User>(API_URL_REGISTER, {
+      .post<User>(/*API_URL_REGISTER*/ url, {
         email: email,
         password: password,
       })

@@ -8,25 +8,28 @@ import { WARNING } from 'src/assets/icon-lib';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ErrorService } from 'src/app/service/error/error.service';
+import { BottomSheetComponent } from '../shared/bottom-sheet/bottom-sheet.component';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm = this.form.group({
+  readonly loginForm = this.form.group({
     username: ['eve.holt@reqres.in', Validators.required],
     password: ['cityslicka', Validators.required],
   });
 
-  submitted: boolean = false;
   loading = false;
-  error = '';
   returnUrl: string;
   isLoggedIn: boolean = false;
   userEmail: string;
 
   private subscription: Subscription;
+  private errorSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +37,10 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+
+    private _bottomSheet: MatBottomSheet,
+    private errorService: ErrorService
   ) {
     this.iconRegistry.addSvgIconLiteral(
       'warning-icon',
@@ -43,6 +49,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.errorSubscription = this.errorService.currentErrorSubject.subscribe(
+      (x) => console.log('error subscription', x)
+    );
+
     this.subscription = this.authenticationService.currentUserSubject
       .pipe(
         filter((x) => {
@@ -56,6 +66,7 @@ export class LoginComponent implements OnInit {
         })
       )
       .subscribe((user) => {
+        debugger;
         this.userEmail = user.email;
         this.isLoggedIn = true;
       });
@@ -68,6 +79,7 @@ export class LoginComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
   }
 
   onSubmit() {
@@ -76,21 +88,24 @@ export class LoginComponent implements OnInit {
     }
 
     //the form is valid
-    this.submitted = true;
+
     const credentials = this.loginForm.value;
     this.loading = true;
     this.authenticationService
       .login(credentials.username, credentials.password)
       .subscribe(
-        () => {
+        (x) => {
           //success
           if (this.returnUrl) {
             this.router.navigate([this.returnUrl]);
           }
         },
         (error) => {
-          console.log('error: ' + error);
-          this.error = error;
+          this.errorService.currentErrorSubject.next({
+            title: error.status,
+            description: error.message,
+          });
+          this._bottomSheet.open(BottomSheetComponent);
           this.loading = false;
         },
         () => {

@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 import { filter } from 'rxjs/operators';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ErrorService } from 'src/app/service/error/error.service';
+import { BottomSheetComponent } from 'src/app/components/shared/bottom-sheet/bottom-sheet.component';
 
 /*
 With Angular material we have to declare an errorStateMatcher to in our case use the validator - password are not the same
@@ -44,7 +47,7 @@ export class RegisterUserComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   subscription: Subscription;
 
-  registerForm = this.form.group(
+  readonly registerForm = this.form.group(
     {
       email: [
         'michael.lawson@reqres.in',
@@ -59,7 +62,9 @@ export class RegisterUserComponent implements OnInit {
   constructor(
     private readonly form: FormBuilder,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private _bottomSheet: MatBottomSheet,
+    private errorService: ErrorService
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +95,11 @@ export class RegisterUserComponent implements OnInit {
           console.log('success register');
         },
         (error) => {
-          console.log('error: ' + error);
+          this.errorService.currentErrorSubject.next({
+            title: error.status,
+            description: error.message,
+          });
+          this._bottomSheet.open(BottomSheetComponent);
         },
         () => {
           this.router.navigate(['/login']);

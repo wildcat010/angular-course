@@ -18,7 +18,6 @@ import { UserViewComponent } from './components/user-view/user-view.component';
 import { UserHomeComponent } from './components/user-home/user-home.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../components/shared/module/shared.module';
 
 @NgModule({
