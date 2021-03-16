@@ -4,7 +4,6 @@ import { NAVIGATION_MENU } from './navigation-menu';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-navigation',
@@ -52,6 +51,11 @@ export class NavigationComponent implements OnInit {
         this.userEmail = user.email;
         this.isUserLogged = true;
       });
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   onMenuClick(sidenav: any) {

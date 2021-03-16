@@ -92,7 +92,7 @@ export class RegisterUserComponent implements OnInit {
       .subscribe(
         () => {
           //success
-          console.log('success register');
+          this.router.navigate(['/login']);
         },
         (error) => {
           this.errorService.currentErrorSubject.next({
@@ -100,9 +100,6 @@ export class RegisterUserComponent implements OnInit {
             description: error.message,
           });
           this.bottomSheet.open(BottomSheetComponent);
-        },
-        () => {
-          this.router.navigate(['/login']);
         }
       );
   }

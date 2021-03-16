@@ -17,7 +17,6 @@ import { SharedModule } from '../components/shared/module/shared.module';
     CommonModule,
     RegisterRoutingModule,
     MatFormFieldModule,
-
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,

@@ -55,7 +55,6 @@ export class UserListComponent implements OnInit {
         });
         this.users.push(...newUsers);
         let { data, ...pgnInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
-        console.log('page info', pgnInfo);
 
         this.setPagination(
           {
@@ -82,8 +81,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log('paginator', this.paginator);
-
+    //init paginator after view loading
     this.dataSource.paginator = this.paginator;
   }
 
@@ -95,16 +93,11 @@ export class UserListComponent implements OnInit {
         this.isProcessing$.next(false);
 
         const index = this.findUserIndex(user.id);
-
         const newUser = [...this.users];
         newUser.splice(index, 1);
-
         this.users.push(...newUser);
         this.users = newUser;
-
         this.dataSource.data = this.users;
-
-        console.log('data', this.isProcessing$.value);
       },
       (error) => {
         this.setState(user, user.previousState);
@@ -193,7 +186,6 @@ export class UserListComponent implements OnInit {
         this.users = [...this.users];
 
         let { data, ...pgnInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
-        console.log('page info', pgnInfo);
         this.setPagination(
           {
             per_page: pgnInfo.per_page,

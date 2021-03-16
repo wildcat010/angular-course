@@ -19,7 +19,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
-        console.log('ERROR INTTERCEPTOR', err);
         if (err.status === 401) {
           // unautthorized error
           this.authService.logout();

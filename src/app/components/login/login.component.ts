@@ -7,12 +7,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { WARNING } from 'src/assets/icon-lib';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ErrorService } from 'src/app/service/error/error.service';
 import { BottomSheetComponent } from '../shared/bottom-sheet/bottom-sheet.component';
-
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-login',

@@ -24,7 +24,6 @@ export class UserViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe((params) => {
-      console.log('id', params.id);
       this.getUserById(params.id);
     });
   }
@@ -36,7 +35,6 @@ export class UserViewComponent implements OnInit {
   getUserById(id: number) {
     this.userService.getUser(id).subscribe(
       (userInformation) => {
-        console.log('user', userInformation);
         //success
         this.user = userInformation.data;
       },
@@ -46,9 +44,6 @@ export class UserViewComponent implements OnInit {
           description: error.message,
         });
         this.bottomSheet.open(BottomSheetComponent);
-      },
-      () => {
-        console.log('user', this.user);
       }
     );
   }

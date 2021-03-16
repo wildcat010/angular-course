@@ -42,7 +42,6 @@ import { SharedModule } from '../components/shared/module/shared.module';
     MatCardModule,
     MatDividerModule,
     MatPaginatorModule,
-
     SharedModule,
   ],
   providers: [UserService],

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-import { UserWithState } from '../model/user-with-state';
 import { User } from 'src/app/model/User';
 import { API_URL_USERS } from 'src/app/global/constants';
 
@@ -18,22 +16,20 @@ export class UserService {
   }
 
   getUser(id: number): Observable<any> {
-    const url = 'https://reqres.in/api/users/' + id;
+    const url = API_URL_USERS + id;
     return this.http.get<any>(url);
   }
 
   deleteUser(id: number): Observable<any> {
     let params = new HttpParams();
     //params = params.append('delay', '1');
-
-    const url = 'https://reqres.in/api/users/' + id;
+    const url = API_URL_USERS + id;
     return this.http.delete<any>(url, { params: params });
   }
 
   updateUser(user: User): Observable<any> {
     const body = JSON.stringify(user.toString());
-    console.log('body', body);
-    const url = 'https://reqres.in/api/users/' + user.id;
+    const url = API_URL_USERS + user.id;
     return this.http.put<any>(url, body);
   }
 }

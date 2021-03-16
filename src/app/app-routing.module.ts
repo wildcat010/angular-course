@@ -20,10 +20,10 @@ const routes: Routes = [
       import('./register/register.module').then((m) => m.RegisterModule),
   },
   { path: 'login', component: LoginComponent },
-  // {
-  //   path: '**',
-  //   component: NotFoundComponent,
-  // },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
