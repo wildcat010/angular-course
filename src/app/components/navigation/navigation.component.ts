@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 import { LanguageService } from 'src/app/service/language/language.service';
 import { LANGUAGE_MENU } from 'src/app/service/language/langugage-menu';
+import { LocalStorageService } from 'src/app/service/local-storage/local-storage.service';
+import { LOCAL_STORAGE_LANGUAGE } from 'src/app/global/constants';
 
 @Component({
   selector: 'app-navigation',
@@ -26,7 +28,8 @@ export class NavigationComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private localStorageBrowser: LocalStorageService
   ) {
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -76,7 +79,10 @@ export class NavigationComponent implements OnInit {
 
   setLangugage(lang: string) {
     this.languageService.currentUserSubject.next(lang);
-    this.languageService.setLanguageFromLocalStorage(lang);
+    this.localStorageBrowser.setLanguageFromLocalStorage(
+      LOCAL_STORAGE_LANGUAGE,
+      lang
+    );
   }
 
   signOut() {

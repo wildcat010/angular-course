@@ -3,7 +3,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../model/User';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { API_URL_LOGIN, API_URL_REGISTER } from 'src/app/global/constants';
+import {
+  API_URL_LOGIN,
+  API_URL_REGISTER,
+  LOCAL_STORAGE_CURRENT_USER,
+} from 'src/app/global/constants';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +16,15 @@ import { API_URL_LOGIN, API_URL_REGISTER } from 'src/app/global/constants';
 export class AuthenticationService {
   currentUserSubject: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private localStorageBrowser: LocalStorageService
+  ) {
+    const currentUser = this.localStorageBrowser.getLanguageFromLocalStorage(
+      LOCAL_STORAGE_CURRENT_USER
+    );
     this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem('currentUser'))
+      JSON.parse(currentUser)
     );
   }
 
@@ -26,7 +37,11 @@ export class AuthenticationService {
       .pipe(
         map((userToken) => {
           const myUser = { email: username, token: userToken.token };
-          localStorage.setItem('currentUser', JSON.stringify(myUser));
+
+          this.localStorageBrowser.setLanguageFromLocalStorage(
+            LOCAL_STORAGE_CURRENT_USER,
+            JSON.stringify(myUser)
+          );
           this.currentUserSubject.next(myUser);
           return myUser;
         })
@@ -42,7 +57,10 @@ export class AuthenticationService {
       .pipe(
         map((user) => {
           const myUser = { email: email, token: user.token };
-          localStorage.setItem('currentUser', JSON.stringify(myUser));
+          this.localStorageBrowser.setLanguageFromLocalStorage(
+            LOCAL_STORAGE_CURRENT_USER,
+            JSON.stringify(myUser)
+          );
           this.currentUserSubject.next(myUser);
           return myUser;
         })
@@ -50,7 +68,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    this.localStorageBrowser.removeFromLocalStorage(LOCAL_STORAGE_CURRENT_USER);
     this.currentUserSubject.next(null);
   }
 }

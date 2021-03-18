@@ -31,6 +31,8 @@ import {
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageService } from './service/language/language.service';
+import { LocalStorageService } from './service/local-storage/local-storage.service';
+import { Subscription } from 'rxjs';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -77,24 +79,32 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InterceptorProviders,
     ErrorService,
     LanguageService,
+    LocalStorageService,
   ],
   bootstrap: [AppComponent],
   exports: [TranslateModule],
 })
 export class AppModule {
+  private languageSubscription: Subscription;
   constructor(
     public translate: TranslateService,
     private langugage: LanguageService
   ) {
     translate.addLangs(['en', 'fr']);
 
-    this.langugage.currentUserSubject.subscribe((userLang) => {
-      console.log('lang is ,', userLang);
-      if (userLang) {
-        translate.use(userLang);
-      } else {
-        this.translate.setDefaultLang('en');
+    this.languageSubscription = this.langugage.currentUserSubject.subscribe(
+      (userLang) => {
+        console.log('lang is ,', userLang);
+        if (userLang) {
+          translate.use(userLang);
+        } else {
+          this.translate.setDefaultLang('en');
+        }
       }
-    });
+    );
+  }
+
+  ngOnDestroy() {
+    this.languageSubscription.unsubscribe();
   }
 }

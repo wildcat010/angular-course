@@ -27,5 +27,5 @@
   "Users": "Utilisateurs",
   "Login": "Connexion",
   "home.translations-text": "Ngrx-translate avec i18n est utilisé pour les traductions en anglais et en français. (la page d'accueil, la navigation et quelques éléments de la liste des utilisateurs sont traduit, il s'agit de tester les différentes fonctionnalités avec 'lazy loading', traduction dans le 'template' et fonctionnalité de marker()",
-  "home.translations-text2": "The favorite lanngugage of the user is stored in the local storage of the browser"
+  "home.translations-text2": "La langue préférée de l'utilisateur est sauvegardée dans le stockage local du navigateur"
 }
