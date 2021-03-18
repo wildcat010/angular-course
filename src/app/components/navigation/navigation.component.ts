@@ -4,6 +4,8 @@ import { NAVIGATION_MENU } from './navigation-menu';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
+import { LanguageService } from 'src/app/service/language/language.service';
+import { LANGUAGE_MENU } from 'src/app/service/language/langugage-menu';
 
 @Component({
   selector: 'app-navigation',
@@ -14,6 +16,8 @@ export class NavigationComponent implements OnInit {
   isDrawerActive = false;
   displayRouteName: string;
   menuList = NAVIGATION_MENU;
+  languageList = LANGUAGE_MENU;
+  userLangugage: string = 'en/fr';
   userEmail: string;
   isUserLogged: boolean = false;
   private routeSubscription: Subscription;
@@ -21,7 +25,8 @@ export class NavigationComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private languageService: LanguageService
   ) {
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -35,6 +40,12 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.languageService.currentUserSubject.subscribe((lang) => {
+      if (lang) {
+        this.userLangugage = lang;
+      }
+    });
+
     this.userSubscription = this.authService.currentUserSubject
       .pipe(
         filter((x) => {
@@ -61,6 +72,11 @@ export class NavigationComponent implements OnInit {
   onMenuClick(sidenav: any) {
     sidenav.toggle();
     this.isDrawerActive = !this.isDrawerActive;
+  }
+
+  setLangugage(lang: string) {
+    this.languageService.currentUserSubject.next(lang);
+    this.languageService.setLanguageFromLocalStorage(lang);
   }
 
   signOut() {

@@ -10,10 +10,26 @@
       Menu
     </button>
     <div class="display-location">{{ displayRouteName | uppercase }}</div>
+
+    <div class="userLanguage">
+      <button mat-stroked-button [matMenuTriggerFor]="menu">
+        {{ userLangugage }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let language of languageList"
+          (click)="setLangugage(language.index)"
+        >
+          {{ language.label }}
+        </button>
+      </mat-menu>
+    </div>
+
     <div *ngIf="isUserLogged" class="menuUserAuthentication">
       <button mat-flat-button [matMenuTriggerFor]="menuAuth">
         <mat-icon>account_circle</mat-icon>
-        User
+        {{ "nav.user" | translate }}
       </button>
       <mat-menu #menuAuth="matMenu">
         <button mat-menu-item disabled>
@@ -30,17 +46,18 @@
   </mat-toolbar>
 
   <mat-drawer #drawer class="mat-sidenav" mode="side">
-    <mat-selection-list #shoes [multiple]="false">
+    <mat-selection-list [multiple]="false">
       <mat-list-option
         *ngFor="let menu of menuList"
         [value]="menu"
         [routerLink]="menu.routerLink"
         routerLinkActive="isActive"
       >
-        <div>{{ menu.label }}</div>
+        <div>{{ menu.label | translate }}</div>
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>
+
   <div class="container">
     <router-outlet></router-outlet>
   </div>

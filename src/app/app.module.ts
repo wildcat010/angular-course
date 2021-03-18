@@ -14,7 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from './service/authentication/authentication.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,6 +24,18 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { InterceptorProviders } from './interceptor/interceptorProviders';
 import { SharedModule } from './shared/module/shared.module';
 import { ErrorService } from './service/error/error.service';
+import {
+  TranslateModule,
+  TranslateLoader,
+  TranslateService,
+} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LanguageService } from './service/language/language.service';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [
@@ -52,8 +64,37 @@ import { ErrorService } from './service/error/error.service';
     MatDividerModule,
     MatMenuModule,
     SharedModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
-  providers: [AuthenticationService, InterceptorProviders, ErrorService],
+  providers: [
+    AuthenticationService,
+    InterceptorProviders,
+    ErrorService,
+    LanguageService,
+  ],
   bootstrap: [AppComponent],
+  exports: [TranslateModule],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    public translate: TranslateService,
+    private langugage: LanguageService
+  ) {
+    translate.addLangs(['en', 'fr']);
+
+    this.langugage.currentUserSubject.subscribe((userLang) => {
+      console.log('lang is ,', userLang);
+      if (userLang) {
+        translate.use(userLang);
+      } else {
+        this.translate.setDefaultLang('en');
+      }
+    });
+  }
+}

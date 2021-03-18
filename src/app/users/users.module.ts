@@ -19,6 +19,7 @@ import { UserHomeComponent } from './components/user-home/user-home.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SharedModule } from '../shared/module/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SharedModule } from '../shared/module/shared.module';
     MatDividerModule,
     MatPaginatorModule,
     SharedModule,
+    TranslateModule,
   ],
   providers: [UserService],
 })

@@ -1,6 +1,73 @@
 <div class="element">
-  <p>home works!</p>
-  <div class="alert alert-success">
-    <strong>Success!</strong> Indicates a successful or positive action.
-  </div>
+  <h1>{{ "home.course" | translate }}</h1>
+
+  <h3>{{ "home.requirements" | translate }}</h3>
+  <dl>
+    <dt>API</dt>
+    <dd>- {{ "home.using-the" | translate }}'reqres.in'</dd>
+    <dt>Auth. system</dt>
+    <dd>- {{ "home.auth-system-text" | translate }}</dd>
+    <dt>{{ "home.pagination" | translate }}</dt>
+    <dd>
+      {{ "home.ang-mat-pagination-text" | translate }}
+    </dd>
+  </dl>
+
+  <h3>Navigation:</h3>
+  <dl>
+    <dt>Pages</dt>
+    <dd>
+      - /home :
+      <span>{{ "home.home-text" | translate }}</span>
+    </dd>
+    <dd>
+      - /users :
+      <span>{{ "home.user-text" | translate }}</span>
+    </dd>
+
+    <dd>
+      &emsp;- /users/:id :
+      <span>{{ "home.user-id-text" | translate }}</span>
+    </dd>
+    <dd>
+      - /login :
+      <span>{{ "home.login-text" | translate }}</span>
+    </dd>
+    <dd>
+      - /register :
+      <span>{{ "home.register-text" | translate }}</span>
+    </dd>
+    <dd>
+      - /** :
+      <span>{{ "home.wildcart-text" | translate }}</span>
+    </dd>
+  </dl>
+
+  <h3>{{ "typescript-skills" | translate }}</h3>
+  <dl>
+    <dt>Enums</dt>
+    <dd>- {{ "home.enums-text" | translate }}</dd>
+    <dt>Generics</dt>
+    <dd>- {{ "home.generic-text" | translate }}</dd>
+  </dl>
+
+  <h3>RxJs</h3>
+  <dl>
+    <dt>BehaviorSubject</dt>
+    <dd>
+      {{ "home.behavior-subject-text" | translate }}
+    </dd>
+  </dl>
+
+  <h3>Angular</h3>
+  <dl>
+    <dt>Directive</dt>
+    <dd>
+      {{ "home.directive-text" | translate }}
+    </dd>
+    <dt>{{ "home.ve-title" | translate }}</dt>
+    <dd>
+      {{ "home.ve-text" | translate }}
+    </dd>
+  </dl>
 </div>

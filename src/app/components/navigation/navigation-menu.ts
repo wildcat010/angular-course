@@ -1,7 +1,8 @@
 import { MenuItem } from './menu-item';
+import { marker } from '@biesbjerg/ngx-translate-extract-marker';
 
 export const NAVIGATION_MENU: MenuItem[] = [
-  { label: 'Home', routerLink: 'home' },
-  { label: 'Users', routerLink: 'users' },
-  { label: 'Login', routerLink: 'login' }
+  { label: marker('Home'), routerLink: 'home' },
+  { label: marker('Users'), routerLink: 'users' },
+  { label: marker('Login'), routerLink: 'login' },
 ];

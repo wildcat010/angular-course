@@ -1,6 +1,9 @@
 <div class="element">
+  <h1>{{ "users-page" | translate }}</h1>
   <app-spinner [isProcessing]="isProcessing$ | async">
-    <p class="descriptionProcessing">Processing the user list, please wait</p>
+    <p class="descriptionProcessing">
+      {{ "user-processing" | translate }}Processing the user list, please wait
+    </p>
   </app-spinner>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

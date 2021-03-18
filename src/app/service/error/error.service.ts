@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MyError } from 'src/app/users/model/error';
+import { MyError } from 'src/app/model/error';
 
 export type errorType<T> = { value: T };
 
