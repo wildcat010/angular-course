@@ -17,6 +17,7 @@ import { Pagination } from '../../model/pagination';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ErrorService } from 'src/app/service/error/error.service';
 import { BottomSheetComponent } from 'src/app/shared/bottom-sheet/bottom-sheet.component';
+import { User } from 'src/app/model/User';
 
 @Component({
   selector: 'app-user-list',
@@ -25,6 +26,10 @@ import { BottomSheetComponent } from 'src/app/shared/bottom-sheet/bottom-sheet.c
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent implements OnInit {
+  private _users = new BehaviorSubject<UserWithState[]>([]);
+  private dataStore: { theUsers: UserWithState[] } = { theUsers: [] };
+  readonly theUsers = this._users.asObservable();
+
   users: UserWithState[] = [];
   isProcessing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -49,40 +54,19 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUserList(1).subscribe(
       (usersInformation) => {
-        const newUsers = usersInformation.data;
-        newUsers.forEach((element) => {
-          element.state = userState.ORIGINAL;
-        });
-        this.users.push(...newUsers);
-        let { data, ...pgnInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
-
-        this.setPagination(
-          {
-            per_page: pgnInfo.per_page,
-            length: pgnInfo.total,
-            page_index: pgnInfo.page,
-          },
-          true
-        );
+        const newUsers = this.castUserToUserWithState(usersInformation.data);
+        this.updateUsersData({}, newUsers);
+        this.updatePagination(usersInformation, true);
+        this.dataSource.data = this.dataStore.theUsers;
       },
       (error) => {
-        this.errorService.currentErrorSubject.next({
-          title: error.status,
-          description: error.message,
-        });
-        this.bottomSheet.open(BottomSheetComponent);
-        this.isProcessing$.next(false);
+        this.createHTTPError(error);
       },
       () => {
         this.isProcessing$.next(false);
-        this.dataSource.data = this.users;
+        console.log('reload data1');
       }
     );
-  }
-
-  ngAfterViewInit() {
-    //init paginator after view loading
-    this.dataSource.paginator = this.paginator;
   }
 
   onDeleteUser(user: UserWithState) {
@@ -93,31 +77,26 @@ export class UserListComponent implements OnInit {
         this.isProcessing$.next(false);
 
         const index = this.findUserIndex(user.id);
-        const newUser = [...this.users];
-        newUser.splice(index, 1);
-        this.users.push(...newUser);
-        this.users = newUser;
-        this.dataSource.data = this.users;
+        this.dataStore.theUsers.splice(index, 1);
+
+        this.updateUsersData({}, this.dataStore.theUsers);
+
+        this.dataSource.data = this.dataStore.theUsers;
+        this.setPagination(this.pagination, false);
       },
       (error) => {
-        this.setState(user, user.previousState);
-        this.errorService.currentErrorSubject.next({
-          title: error.status,
-          description: error.message,
-        });
-        this.bottomSheet.open(BottomSheetComponent);
-        this.isProcessing$.next(false);
+        this.createHTTPError(error);
       },
       () => {
-        this.setPagination(this.pagination);
+        this.isProcessing$.next(false);
       }
     );
   }
 
   onModify(user: UserWithState) {
     const originalState = user.state;
-    this.setState(user, userState.VIEWING);
-    const userToModify = { ...user };
+    const userToModify = this.setState(user, userState.VIEWING);
+
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '500px',
       data: { userToModify },
@@ -136,19 +115,16 @@ export class UserListComponent implements OnInit {
           (res) => {
             userUpdated = { ...result };
             this.setState(userUpdated, userState.UPDATED);
-            userUpdated.lastUpdated = res.updatedAt;
-            const newUser = { ...userUpdated };
-            this.users[userIndex] = newUser;
-            this.dataSource.data = this.users;
+
+            this.dataStore.theUsers[userIndex] = userUpdated;
+            this._users.next(Object.assign({}, this.dataStore).theUsers);
+
+            this.dataSource.data = this.dataStore.theUsers;
           },
           (error) => {
-            this.errorService.currentErrorSubject.next({
-              title: error.status,
-              description: error.message,
-            });
+            this.createHTTPError(error);
 
-            this.bottomSheet.open(BottomSheetComponent);
-            this.isProcessing$.next(false);
+            //TODO
             const rollbackUser = { ...user };
             this.setState(rollbackUser, originalState);
             this.users[userIndex] = rollbackUser;
@@ -160,12 +136,16 @@ export class UserListComponent implements OnInit {
         );
       } else {
         userIndex = this.findUserIndex(user.id);
-        userUpdated = this.users[userIndex];
-        this.setState(userUpdated, userUpdated.previousState);
+        userUpdated = this.dataStore.theUsers[userIndex];
+        this.dataStore.theUsers[userIndex] = {
+          ...this.setState(userUpdated, userUpdated.previousState),
+        };
+        this.updateUsersData({}, this.dataStore.theUsers);
+        this.dataSource.data = this.dataStore.theUsers;
       }
-      const newUser = { ...userUpdated };
-      this.users[userIndex] = newUser;
-      this.dataSource.data = this.users;
+      // const newUser = { ...userUpdated };
+      // this.dataStore.theUsers[userIndex] = newUser;
+      // this.dataSource.data = this.dataStore.theUsers;
     });
   }
 
@@ -177,44 +157,19 @@ export class UserListComponent implements OnInit {
     this.isProcessing$.next(true);
     this.userService.getUserList($event.pageIndex + 1).subscribe(
       (usersInformation) => {
-        this.users = [];
-        const newUsers = usersInformation.data;
-        newUsers.forEach((element) => {
-          element.state = userState.ORIGINAL;
-        });
-        this.users.push(...newUsers);
-        this.users = [...this.users];
-
-        let { data, ...pgnInfo } = usersInformation; //copy the pagination information into paginationInfo variable without taking the userList - data
-        this.setPagination(
-          {
-            per_page: pgnInfo.per_page,
-            length: pgnInfo.total,
-            page_index: pgnInfo.page,
-          },
-          true
-        );
-
-        this.dataSource.data = this.users;
+        const newUsers = this.castUserToUserWithState(usersInformation.data);
+        this.updateUsersData({}, newUsers);
+        this.updatePagination(usersInformation, true);
+        this.dataSource.data = this.dataStore.theUsers;
       },
       (error) => {
-        this.errorService.currentErrorSubject.next({
-          title: error.status,
-          description: error.message,
-        });
-        this.bottomSheet.open(BottomSheetComponent);
-        this.isProcessing$.next(false);
-        this.setPagination(
-          {
-            per_page: this.pagination.per_page,
-            length: this.pagination.length,
-            page_index: this.pagination.page_index,
-          },
-          true
-        );
+        this.createHTTPError(error);
+
+        this.updatePagination(this.pagination);
       },
       () => {
         this.isProcessing$.next(false);
+        console.log('reload data2');
       }
     );
   }
@@ -228,7 +183,7 @@ export class UserListComponent implements OnInit {
       if (page_index === 0) {
         per_page = per_page - 1;
       }
-      if (this.users.length === 0) {
+      if (this.dataStore.theUsers.length === 0) {
         return this.pageEvent(1);
       }
     } else {
@@ -243,14 +198,47 @@ export class UserListComponent implements OnInit {
   }
 
   private findUserIndex(userId: number): number {
-    return this.users.findIndex((x) => x.id === userId);
+    return this.dataStore.theUsers.findIndex((x) => x.id === userId);
   }
 
-  private setState(user: UserWithState, state: userState): void {
+  private updatePagination(data: any, pageEvent: boolean = false): void {
+    this.setPagination(
+      {
+        per_page: data.per_page,
+        length: data.total,
+        page_index: data.page,
+      },
+      pageEvent
+    );
+  }
+  private createHTTPError(error: any): void {
+    this.errorService.currentErrorSubject.next({
+      title: error.status,
+      description: error.message,
+    });
+    this.bottomSheet.open(BottomSheetComponent);
+    this.isProcessing$.next(false);
+  }
+
+  private castUserToUserWithState(data: User[]): UserWithState[] {
+    const myUsers = data as UserWithState[];
+    myUsers.forEach((element) => {
+      element.state = userState.ORIGINAL;
+    });
+    return myUsers;
+  }
+
+  private updateUsersData(update: any, data: any): void {
+    this.dataStore.theUsers = data;
+    this._users.next(Object.assign(update, this.dataStore).theUsers);
+  }
+
+  private setState(user: UserWithState, state: userState): UserWithState {
     const previousState = user.state;
     if (previousState !== state) {
       user.previousState = previousState;
       user.state = state;
     }
+    return user;
   }
 }

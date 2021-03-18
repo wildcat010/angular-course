@@ -20,7 +20,7 @@
   "home.ve-text": "Les composants partagés sont utilisés autour de l'application, ils utilisent l'encapsulation 'Shadow' (voir: bottom-sheet.component.ts, spinner.component.ts)",
   "home.cd-text": "la liste des utilisateurs utilise OnPush détection",
   "home.interceptors-text": "interceptors sont utilisés pour la détection des erreurs HTTP et pour transmettre le token de l'utilisateur",
-  "users-page": "User page",
+  "users-page": "Page des utilisateurs",
   "user-processing": "Traitement de la liste des utilisateurs, veuillez patienter",
   "Home": "Accueil",
   "nav.user": "Utilisateur identifié",

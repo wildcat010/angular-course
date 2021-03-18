@@ -21,7 +21,7 @@
   "home.cd-text": "the user-list is using the OnPush detection",
   "home.interceptors-text": "interceptors are used for HTTP errors detection and send the user's token in HTTP header",
   "nav.user": "Current user",
-  "users-page": "User Page",
+  "users-page": "Users Page",
   "user-processing": "Processing the user list, please wait",
   "Home": "Home",
   "Users": "Users",
