@@ -18,12 +18,14 @@
   "home.directive-text": "A custom directive has been implemented to change the color of the icon state in the user list(see: userState.directive.ts)",
   "home.ve-title": "View Encapsulation",
   "home.ve-text": "Shared components are used around the application , they using shadow view encapsulation (see: bottom-sheet.component.ts, spinner.component.ts)",
-  "home.1": "Change Detection: the user-list is using the OnPush detection",
-  "home.2": "Interceptors: interceptors are used HTTP errors and HTTP header to send the token",
+  "home.cd-text": "the user-list is using the OnPush detection",
+  "home.interceptors-text": "interceptors are used for HTTP errors detection and send the user's token in HTTP header",
   "nav.user": "Current user",
   "users-page": "User Page",
   "user-processing": "Processing the user list, please wait",
   "Home": "Home",
   "Users": "Users",
-  "Login": "Login"
+  "Login": "Login",
+  "home.translations-text": "Ngrx-translate with i18n is using for translations in english and french.(the home page, navigation and few items on the user list are actuallytranslated, it was to test different fonctionnalities for translation byazy loading, template translation and marker() feature)",
+  "home.translations-text2": "The favorite lanngugage of the user is stored in the local storage of the browser"
 }

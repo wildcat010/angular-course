@@ -80,7 +80,6 @@ export class LoginComponent implements OnInit {
     }
 
     //the form is valid
-    debugger;
     const credentials = this.loginForm.value;
     this.loading = true;
     this.authenticationService
