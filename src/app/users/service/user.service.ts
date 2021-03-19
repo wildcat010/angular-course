@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from 'src/app/model/User';
 import { API_URL_USERS } from 'src/app/global/constants';
+import { UserWithState } from '../model/user-with-state';
 
 @Injectable()
 export class UserService {

@@ -1,7 +1,5 @@
 <h1 mat-dialog-title>Updating the account of {{ userToUpdate.email }}</h1>
-<h3 *ngIf="userToUpdate.lastUpdated">
-  last update: {{ userToUpdate.lastUpdated | date: "dd/MM/yyyy hh:mm:ss" }}
-</h3>
+
 <mat-tab-group mat-align-tabs="start">
   <mat-tab label="Profile">
     <div mat-dialog-content class="content">

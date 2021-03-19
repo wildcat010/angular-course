@@ -20,6 +20,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SharedModule } from '../shared/module/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { UsersStoreService } from './service/users-store.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,6 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedModule,
     TranslateModule,
   ],
-  providers: [UserService],
+  providers: [UserService, UsersStoreService],
 })
 export class UsersModule {}

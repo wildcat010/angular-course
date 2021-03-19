@@ -94,7 +94,6 @@ export class AppModule {
 
     this.languageSubscription = this.langugage.currentUserSubject.subscribe(
       (userLang) => {
-        console.log('lang is ,', userLang);
         if (userLang) {
           translate.use(userLang);
         } else {
