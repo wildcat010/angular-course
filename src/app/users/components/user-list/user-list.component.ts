@@ -87,7 +87,11 @@ export class UserListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.setState(user, userState.MODIFIED);
+        const modifiedUser = { ...this.setState(user, userState.MODIFIED) };
+        this.usersStoreService.changeStateUser(modifiedUser);
+
         this.usersStoreService.updateUser(result).subscribe((x) => {
+          debugger;
           if (x === false) {
             this.usersStoreService.rollbackChangeOnUser(originalUser);
             return;
