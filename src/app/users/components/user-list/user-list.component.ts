@@ -91,7 +91,6 @@ export class UserListComponent implements OnInit {
         this.usersStoreService.changeStateUser(modifiedUser);
 
         this.usersStoreService.updateUser(result).subscribe((x) => {
-          debugger;
           if (x === false) {
             this.usersStoreService.rollbackChangeOnUser(originalUser);
             return;
