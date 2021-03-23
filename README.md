@@ -21,5 +21,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## URL of the website
 
 Navigate to https://ngappcourseangular.z22.web.core.windows.net/
-
-# ANGULAR-bbourgeon
