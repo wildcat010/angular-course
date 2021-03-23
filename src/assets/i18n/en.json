@@ -27,5 +27,11 @@
   "Users": "Users",
   "Login": "Login",
   "home.translations-text": "Ngrx-translate with i18n is using for translations in english and french.(the home page, navigation and few items on the user list are actuallytranslated, it was to test different fonctionnalities for translation byazy loading, template translation and marker() feature)",
-  "home.translations-text2": "The favorite langugage of the user is stored in the local storage of the browser"
+  "home.translations-text2": "The favorite langugage of the user is stored in the local storage of the browser",
+  "home.va-text": "Control Value Accessor is implemented on the login page, for the user page I used the 'Angular Material' lib to create the form and to define a custom validator",
+  "home.dos-text": "A Data Observable Service is implemented as a store for the list of users , NgRX was too complicated.",
+  "home.ds-title": "Design and Styling",
+  "home.ds-text": "During developing the project, I tried to use as much as possible the 'Angular Material' library for the design and functionalities.",
+  "home.deployement-title": "Deployement",
+  "home.deployement-text": "The project is hosted on the 'Azure' cloud platform, it is deployed on a specific box recently released and specially designed for 'Angular' or React project. (see: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website)"
 }

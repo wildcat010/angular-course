@@ -1,0 +1,21 @@
+<mat-form-field class="customInput">
+  <mat-label>Username</mat-label>
+  <input
+    matInput
+    [type]="Type"
+    [placeholder]="Placeholder"
+    [value]="value"
+    (blur)="onTouched()"
+    (input)="onInputChange($event)"
+  />
+  <button
+    type="button"
+    mat-button
+    matSuffix
+    mat-icon-button
+    (click)="clearInput()"
+    *ngIf="value"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>

@@ -18,66 +18,39 @@
     <mat-divider class="divider"></mat-divider>
     <mat-card>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="loginForm">
-          <mat-label>Username</mat-label>
-          <input
-            matInput
-            type="email"
-            placeholder="username"
-            [formControlName]="'username'"
-          />
-          <button
-            type="button"
-            mat-button
-            matSuffix
-            mat-icon-button
-            *ngIf="loginForm.get('username').value"
-            (click)="resetInput('username')"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-          <mat-error
-            class="formError"
-            *ngIf="
-              loginForm.get('username').touched &&
-              loginForm.get('username').errors?.required
-            "
-          >
-            Username is required
-          </mat-error>
-          <mat-error *ngIf="loginForm.get('username').hasError('email')">
-            Please enter a valid email address
-          </mat-error>
-        </mat-form-field>
+        <app-custom-input
+          formControlName="username"
+          [Type]="'email'"
+          [Placeholder]="'username'"
+        ></app-custom-input>
+        <mat-error
+          class="formError"
+          *ngIf="
+            loginForm.get('username').touched &&
+            loginForm.get('username').errors?.required
+          "
+        >
+          Username is required
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('username').hasError('email')">
+          Please enter a valid email address
+        </mat-error>
 
-        <mat-form-field class="loginForm">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            type="password"
-            placeholder="password"
-            [formControlName]="'password'"
-          />
-          <button
-            type="button"
-            mat-button
-            matSuffix
-            mat-icon-button
-            *ngIf="loginForm.get('password').value"
-            (click)="resetInput('password')"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-          <mat-error
-            class="formError"
-            *ngIf="
-              loginForm.get('password').touched &&
-              loginForm.get('password').errors?.required
-            "
-          >
-            Password is required
-          </mat-error>
-        </mat-form-field>
+        <app-custom-input
+          formControlName="password"
+          [Type]="'password'"
+          [Placeholder]="'Password'"
+        ></app-custom-input>
+        <mat-error
+          class="formError"
+          *ngIf="
+            loginForm.get('password').touched &&
+            loginForm.get('password').errors?.required
+          "
+        >
+          Password is required
+        </mat-error>
+
         <button
           class="log-btn"
           type="submit"

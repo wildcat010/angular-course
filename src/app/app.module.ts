@@ -33,6 +33,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageService } from './service/language/language.service';
 import { LocalStorageService } from './service/local-storage/local-storage.service';
 import { Subscription } from 'rxjs';
+import { CustomInputComponent } from './components/login/custom-input/custom-input.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -47,6 +48,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HomeComponent,
     LoginComponent,
     NotFoundComponent,
+    CustomInputComponent,
   ],
   imports: [
     BrowserModule,

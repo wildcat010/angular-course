@@ -18,7 +18,10 @@ import { BottomSheetComponent } from '../../shared/bottom-sheet/bottom-sheet.com
 })
 export class LoginComponent implements OnInit {
   readonly loginForm = this.form.group({
-    username: new FormControl('eve.holt@reqres.in', Validators.required),
+    username: new FormControl('eve.holt@reqres.in', [
+      Validators.required,
+      Validators.email,
+    ]),
     password: new FormControl('cityslicka', Validators.required),
   });
 
@@ -78,8 +81,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-
-    //the form is valid
     const credentials = this.loginForm.value;
     this.loading = true;
     this.authenticationService
