@@ -1,5 +1,5 @@
 <mat-drawer-container class="mat-container" autosize>
-  <mat-toolbar class="mat-header">
+  <mat-toolbar class="mat-header sidenav-row">
     <button
       type="button"
       mat-stroked-button
@@ -7,22 +7,57 @@
       [ngClass]="{ isActive: isDrawerActive }"
     >
       <mat-icon class="home-icon">home</mat-icon>
-      Menu - {{ isDrawerActive }}
+      Menu
     </button>
+    <div class="display-location">{{ displayRouteName | uppercase }}</div>
+
+    <div class="userLanguage">
+      <button mat-stroked-button [matMenuTriggerFor]="menu">
+        {{ userLangugage }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let language of languageList"
+          (click)="setLangugage(language.index)"
+        >
+          {{ language.label }}
+        </button>
+      </mat-menu>
+    </div>
+
+    <div *ngIf="isUserLogged" class="menuUserAuthentication">
+      <button mat-flat-button [matMenuTriggerFor]="menuAuth">
+        <mat-icon>account_circle</mat-icon>
+        {{ "nav.user" | translate }}
+      </button>
+      <mat-menu #menuAuth="matMenu">
+        <button mat-menu-item disabled>
+          <mat-icon>perm_identity</mat-icon>
+          <span>{{ userEmail }}</span>
+        </button>
+
+        <button mat-menu-item (click)="signOut()">
+          <mat-icon>no_encryption</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    </div>
   </mat-toolbar>
 
   <mat-drawer #drawer class="mat-sidenav" mode="side">
-    <mat-selection-list #shoes [multiple]="false">
+    <mat-selection-list [multiple]="false">
       <mat-list-option
-        *ngFor="let menuItem of menu"
-        [value]="menuItem"
-        [routerLink]="menuItem.routerLink"
+        *ngFor="let menu of menuList"
+        [value]="menu"
+        [routerLink]="menu.routerLink"
         routerLinkActive="isActive"
       >
-        {{ menuItem.label }}
+        <div>{{ menu.label | translate }}</div>
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>
+
   <div class="container">
     <router-outlet></router-outlet>
   </div>

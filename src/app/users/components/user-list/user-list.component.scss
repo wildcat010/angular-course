@@ -1,0 +1,34 @@
+@import "../../../../global";
+
+table {
+  width: 100%;
+}
+
+td,
+th.mat-header-cell {
+  text-align: center;
+}
+
+.stateIcon {
+  cursor: default;
+}
+
+.original {
+  color: $color-ligh-grey;
+}
+
+.modified {
+  color: $color-golden-rod;
+}
+
+.updated {
+  color: $color-deep-green;
+}
+
+.viewing {
+  color: $color-indo;
+}
+
+.deleting {
+  color: $color-dark-red;
+}

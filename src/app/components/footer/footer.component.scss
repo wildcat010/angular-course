@@ -1,0 +1,26 @@
+@import "../../../global";
+
+footer {
+  background-color: $color-light-black;
+}
+
+.logo {
+  width: 3em;
+  height: 3em;
+  margin: 2em;
+}
+
+img {
+  width: 3em;
+  height: 3em;
+}
+
+.logo-container {
+  justify-content: center;
+}
+
+.footerElement {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}

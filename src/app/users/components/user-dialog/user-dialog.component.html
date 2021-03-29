@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Updating the account of {{ userToUpdate.email }}</h1>
+
+<mat-tab-group mat-align-tabs="start">
+  <mat-tab label="Profile">
+    <div mat-dialog-content class="content">
+      <mat-form-field class="input-field">
+        <mat-label>email</mat-label>
+        <input matInput [(ngModel)]="userToUpdate.email" placeholder="Email" />
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>firstname</mat-label>
+        <input
+          matInput
+          placeholder="Firstname"
+          [(ngModel)]="userToUpdate.first_name"
+        />
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>lastname</mat-label>
+        <input
+          matInput
+          placeholder="Lastname"
+          [(ngModel)]="userToUpdate.last_name"
+        />
+      </mat-form-field></div
+  ></mat-tab>
+  <mat-tab label="Avatar">
+    <img [src]="userToUpdate.avatar" class="userAvatar" />
+  </mat-tab>
+</mat-tab-group>
+
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Close</button>
+  <button
+    mat-raised-button
+    [mat-dialog-close]="userToUpdate"
+    color="accent"
+    cdkFocusInitial
+  >
+    Update
+  </button>
+</div>

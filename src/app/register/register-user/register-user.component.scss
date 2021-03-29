@@ -1,0 +1,18 @@
+.registerForm {
+  margin-bottom: 1em;
+}
+
+.registerContainer {
+  display: flex;
+}
+
+.registerCard {
+  flex: 1;
+}
+
+a {
+  color: green;
+  &:hover {
+    color: goldenrod;
+  }
+}

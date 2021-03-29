@@ -1,0 +1,87 @@
+<div class="element">
+  <mat-list *ngIf="!isLoggedIn; else loggedIn">
+    <div *ngIf="getReturnUrl()">
+      <mat-list-item>
+        <div>
+          You are redirected from
+          <span class="redirectionUrl">{{ returnUrl }}</span>
+        </div>
+      </mat-list-item>
+      <mat-divider class="divider"></mat-divider>
+    </div>
+    <mat-list-item>
+      <mat-icon svgIcon="warning-icon" class="icon"></mat-icon>
+
+      <div>You are not authenticated, please submit your credentials</div>
+    </mat-list-item>
+
+    <mat-divider class="divider"></mat-divider>
+    <mat-card>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <app-custom-input
+          formControlName="username"
+          [Type]="'email'"
+          [Placeholder]="'username'"
+        ></app-custom-input>
+        <mat-error
+          class="formError"
+          *ngIf="
+            loginForm.get('username').touched &&
+            loginForm.get('username').errors?.required
+          "
+        >
+          Username is required
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('username').hasError('email')">
+          Please enter a valid email address
+        </mat-error>
+
+        <app-custom-input
+          formControlName="password"
+          [Type]="'password'"
+          [Placeholder]="'Password'"
+        ></app-custom-input>
+        <mat-error
+          class="formError"
+          *ngIf="
+            loginForm.get('password').touched &&
+            loginForm.get('password').errors?.required
+          "
+        >
+          Password is required
+        </mat-error>
+
+        <button
+          class="log-btn"
+          type="submit"
+          mat-raised-button
+          color="accent"
+          [disabled]="!loginForm.valid || loading"
+          matTooltip="Submit the form to log in the application. Your account will be stored on the browser"
+        >
+          Submit
+        </button>
+      </form>
+      <app-spinner [isProcessing]="loading">
+        <p class="descriptionProcessing">
+          Try to login in the application, please wait
+        </p>
+      </app-spinner>
+    </mat-card>
+    <mat-list-item>
+      <mat-icon>help</mat-icon>
+      <div>
+        &nbsp; You don't have an account, you can register here
+        <button mat-raised-button color="primary" (click)="register()">
+          Register
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
+<ng-template #loggedIn>
+  <mat-card>
+    <p>You are signed in as {{ userEmail }}</p>
+    <button mat-raised-button color="warn" (click)="signOut()">Sign Out</button>
+  </mat-card>
+</ng-template>
